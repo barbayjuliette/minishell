@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/12 18:36:30 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/13 12:53:14 by jbarbay          ###   ########.fr       */
+/*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
+/*   Updated: 2024/01/15 22:38:57 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+// Read line
+// Exit when type exit
+// History
 
-#include "libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "../../includes/minishell.h"
 
-# define RED "\001\e[1m\e[31m\002"
-# define GREEN "\001\e[1m\e[32m\002"
-# define YELLOW "\033[1;33m"
-# define DEFAULT "\001\033[0;39m\002"
-# define WHITESPACE " \n\t\f"
+int main(void)
+{
+	char	*line;
 
-#endif
+	while (1)
+	{
+		line = readline("minishell$ ");
+		if (line && *line)
+			add_history(line);
+		if (ft_strncmp(ft_strtrim(line, WHITESPACE), "exit", 5) == 0)
+			break;
+		free(line);
+	}
+	// rl_clear_history();
+	return (0);
+}
