@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/17 18:46:39 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/17 21:40:05 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_token
 }	t_token;
 
 t_token	*get_tokens(char *line);
-void	create_token(int type, char *str, t_token *list);
+void	create_token(int type, char *str, t_token **list);
 void	ft_token_add_back(t_token **lst, t_token *new);
 void	print_tokens(t_token *token);
 
