@@ -1,4 +1,5 @@
-MAIN = srcs/main/prompt.c
+MAIN = srcs/main/prompt.c \
+		srcs/parsing/lexer.c \
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -10,7 +11,7 @@ all: ${NAME}
 
 $(NAME):
 		@make all -C libft
-		$(CC) $(CFLAGS) $(MAIN) -L./libft -lft -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME}
+		$(CC) $(MAIN) -L./libft -lft -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME}
 
 %.o: %.c
 	${CC} $(CFLAGS) -c $<
