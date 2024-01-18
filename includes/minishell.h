@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:36:30 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/17 17:43:53 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/18 13:11:58 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@
 # define YELLOW "\033[1;33m"
 # define DEFAULT "\001\033[0;39m\002"
 # define WHITESPACE " \n\t\f\v\r"
+
+int		is_exit(char *line);
 
 #endif
