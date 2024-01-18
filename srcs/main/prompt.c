@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/18 13:15:21 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/18 13:32:26 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int main(void)
 			free(line);
 			continue ;
 		}
-		// print_tokens(tokens);
+		print_tokens(tokens);
 		free_tokens(&tokens);
 		free(line);
 	}

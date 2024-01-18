@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:32:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/18 13:11:28 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:01:01 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,34 @@ int	process_quote(char *line, int quote, t_token **list)
 		create_token(DOUBLE, str, list);
 	else
 		create_token(SINGLE, str, list);
+	return (i);
+}
+
+int	process_variable(int type, char *line, t_token **list)
+{
+	int	i;
+	char	*str;
+
+	i = 1;
+	if (ft_isdigit(line[i]))
+	{
+		printf("Environment variable cannot start with a digit\n");
+		free_tokens(list);
+		return (-1);
+	}
+	while (line[i] && !ft_strchr(WHITESPACE, line[i]))
+	{	
+		if (!ft_isalnum(line[i]) && line[i] != '_')
+		{
+			printf("Only uppercase, lowercase, and underscores are allowed for environment variables\n");
+			free_tokens(list);
+			return (-1);
+		}
+		i++;
+	}
+	str = (char *)malloc(sizeof(char) * (i + 1));
+	ft_strlcpy(str, line, i + 1);
+	create_token(ENV_VAR, str, list);
 	return (i);
 }
 
@@ -69,6 +97,12 @@ t_token	*get_tokens(char *line)
 		else if (line[i] == 39)
 		{
 			if ((j = process_quote(line + i, 39, &list)) == -1)
+				return (NULL);
+			i += j;
+		}
+		else if (line[i] == '$')
+		{
+			if ((j = process_variable(ENV_VAR, line + i, &list)) == -1)
 				return (NULL);
 			i += j;
 		}
