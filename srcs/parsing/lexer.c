@@ -6,51 +6,52 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:32:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/18 14:01:01 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/18 16:23:42 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	process_quote(char *line, int quote, t_token **list)
+int	process_quote(char **line, int quote, t_token **list)
 {
 	int		i;
 	char	*str;
 
 	i = 1;
-	if (!ft_strchr(line + 1, quote))
+	if (!ft_strchr(*line + 1, quote))
 	{
-		printf("Syntax error: unclosed quote\n");
+		printf("Syntax error: unclosed quotes\n");
 		free_tokens(list);
 		return (-1);
 	}
-	while (line [i] && line[i] != quote)
+	while ((*line + i) && *(*line + i) != quote)
 		i++;
 	i++;
 	str = (char *)malloc(sizeof(char) * (i + 1));
-	ft_strlcpy(str, line, i + 1);
+	ft_strlcpy(str, *line, i + 1);
 	if (quote == 34)
 		create_token(DOUBLE, str, list);
 	else
 		create_token(SINGLE, str, list);
+	*line += i;
 	return (i);
 }
 
-int	process_variable(int type, char *line, t_token **list)
+int	process_variable(char **line, t_token **list)
 {
 	int	i;
 	char	*str;
 
 	i = 1;
-	if (ft_isdigit(line[i]))
+	if (ft_isdigit((*line)[i]))
 	{
 		printf("Environment variable cannot start with a digit\n");
 		free_tokens(list);
 		return (-1);
 	}
-	while (line[i] && !ft_strchr(WHITESPACE, line[i]))
+	while ((*line)[i] && !ft_strchr(WHITESPACE, (*line)[i]))
 	{	
-		if (!ft_isalnum(line[i]) && line[i] != '_')
+		if (!ft_isalnum((*line)[i]) && (*line)[i] != '_')
 		{
 			printf("Only uppercase, lowercase, and underscores are allowed for environment variables\n");
 			free_tokens(list);
@@ -59,57 +60,76 @@ int	process_variable(int type, char *line, t_token **list)
 		i++;
 	}
 	str = (char *)malloc(sizeof(char) * (i + 1));
-	ft_strlcpy(str, line, i + 1);
+	ft_strlcpy(str, *line, i + 1);
 	create_token(ENV_VAR, str, list);
+	*line += i;
 	return (i);
 }
 
-int	process_pipe(int type, t_token **list)
+int	process_pipe(t_token **list)
 {
 	char	*str;
 
-	str = (char *)malloc(sizeof(char) * 2);
-	str[0] = '|';
-	str[1] = '\0';
+	str = ft_strdup("|");
 	create_token(PIPE, str, list);
 	return (1);
 }
 
+int	process_input(char **line, char *c, t_token **list)
+{
+	char	*str;
+	if (ft_strncmp((*line + 1), c, 1) == 0)
+	{
+		str = ft_strjoin((char *)c, (char *)c);
+		if (c[0] == '<')
+			create_token(REDIR_IN_DOUBLE, str, list);
+		else
+			create_token(REDIR_OUT_DOUBLE, str, list);
+		return (2);
+	}
+	else
+	{
+		str = ft_strdup((char *)c);
+		if (c[0] == '<')
+			create_token(REDIR_IN_SINGLE, str, list);
+		else
+			create_token(REDIR_OUT_SINGLE, str, list);
+		return (1);
+	}
+}
+
 t_token	*get_tokens(char *line)
 {
-	int	i;
-	int	j;
 	t_token *list;
 
-	i = 0;
-	j = 0;
 	list = NULL;
-	while (line[i])
+	while (*line)
 	{
-		if (ft_strchr(WHITESPACE, line[i]))
-			i++;
-		else if (line[i] == 34)
+		if (ft_strchr(WHITESPACE, *line))
+			line++;
+		else if (*line == 34)
 		{
-			if ((j = process_quote(line + i, 34, &list)) == -1)
-				return (NULL); // + free list
-			i += j;
-		}
-		else if (line[i] == 39)
-		{
-			if ((j = process_quote(line + i, 39, &list)) == -1)
+			if ((process_quote(&line, 34, &list)) == -1)
 				return (NULL);
-			i += j;
 		}
-		else if (line[i] == '$')
+		else if (*line == 39)
 		{
-			if ((j = process_variable(ENV_VAR, line + i, &list)) == -1)
+			if (process_quote(&line, 39, &list) == -1)
 				return (NULL);
-			i += j;
 		}
-		else if (line[i] == '|')
-			i += process_pipe(PIPE, &list);
+		else if (*line == '$')
+		{
+			if (process_variable(&line, &list) == -1)
+				return (NULL);
+		}
+		else if (*line == '<')
+			line += process_input(&line, "<", &list);
+		else if (*line == '>')
+			line += process_input(&line, ">", &list);
+		else if (*line == '|')
+			line += process_pipe(&list);
 		else
-			i++;
+			line++;
 	}
 	return (list);
 }

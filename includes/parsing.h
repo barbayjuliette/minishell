@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/18 13:13:08 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/18 16:22:32 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@
 #define SINGLE 1
 #define DOUBLE 2
 #define PIPE 3
-#define REDIR 4
-#define ENV_VAR 5
+#define ENV_VAR 4
+#define REDIR_IN_SINGLE 5
+#define REDIR_IN_DOUBLE 6
+#define REDIR_OUT_SINGLE 7
+#define REDIR_OUT_DOUBLE 8
 
 typedef struct s_token
 {
@@ -30,8 +33,10 @@ typedef struct s_token
 // Tokenizer
 t_token	*get_tokens(char *line);
 void	create_token(int type, char *str, t_token **list);
-int		process_quote(char *line, int quote, t_token **list);
-int		process_pipe(int type, t_token **list);
+int		process_quote(char **line, int quote, t_token **list);
+int		process_pipe(t_token **list);
+int		process_variable(char **line, t_token **list);
+int		process_input(char **line, char *c, t_token **list);
 
 // Token list helpers
 void	print_tokens(t_token *token);
