@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:32:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/18 19:01:11 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/19 17:45:43 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// I find the quote that will close it. If I don't find it, I will return an error
 
 int	process_quote(char **line, int quote, t_token **list)
 {
@@ -45,7 +47,9 @@ int	error_tokens(int error, t_token **list)
 	return (-1);
 }
 
-int	process_variable(char **line, t_token **list)
+// I first check if the environment viariable has a valid syntax
+
+int	process_env_var(char **line, t_token **list)
 {
 	int		i;
 	char	*str;
@@ -75,7 +79,8 @@ int	process_pipe(t_token **list)
 	return (1);
 }
 
-int	process_input(char **line, char *c, t_token **list)
+// I find > / <. i check if the char after is the same char to know if single or double.
+int	process_redirect(char **line, char *c, t_token **list)
 {
 	char	*str;
 
@@ -99,78 +104,6 @@ int	process_input(char **line, char *c, t_token **list)
 	}
 }
 
-// We can have quotes inside string
-// Example echo"hello""hello" -> cmd not found echohellohello
-// Make sure the quotes are closed
-// pwd'd' -> valid, pw'd -> not valid
-// echo"hello'hi" -> valid as a token, echo"hello -> invalid token
-
-int	find_quote(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == (unsigned char)c)
-			return (i);
-		i++;
-	}
-	return (0);
-}
-
-int	check_unclosed_quotes(char *str, t_token **list)
-{
-	int	i;
-	int	pos;
-
-	i = 1;
-	while (str[i])
-	{
-		//  If we find the quote, we have to find the second one
-		if (str[i] == 34)
-		{
-			pos = find_quote(str + i + 1, 34);
-			if (!pos)
-				return (error_tokens(3, list));
-			else
-				i += pos;
-		}
-		else if (str[i] == 39)
-		{
-			pos = find_quote(str + i + 1, 39);
-			if (!pos)
-				return (error_tokens(3, list));
-			else
-				i += pos;
-		}
-		else
-			i++;
-	}
-	return (i);
-}
-
-// Anything else will be STRING
-// cmd1|cmd2>outfile will work, recognizes the pipe and redirections
-// Something like $VAR could be stored as STRING, so some values inside STRING might need to get expanded
-// Example: p$VAR -> during execution expanded as pwd
-
-int	process_string(char **line, t_token **list)
-{
-	int		i;
-	char	*str;
-
-	i = 0;
-	while ((*line)[i] && (*line)[i] != '|' && (*line)[i] != '<' && (*line)[i] != '>')
-		i++;
-	str = (char *)malloc(sizeof(char) * (i + 1));
-	ft_strlcpy(str, *line, i + 1);
-	create_token(STRING, str, list);
-	if (check_unclosed_quotes(str, list) == -1)
-		return (-1);
-	*line += i;
-	return (0);
-}
 
 t_token	*get_tokens(char *line)
 {
@@ -193,13 +126,13 @@ t_token	*get_tokens(char *line)
 		}
 		else if (*line == '$')
 		{
-			if (process_variable(&line, &list) == -1)
+			if (process_env_var(&line, &list) == -1)
 				return (NULL);
 		}
 		else if (*line == '<')
-			line += process_input(&line, "<", &list);
+			line += process_redirect(&line, "<", &list);
 		else if (*line == '>')
-			line += process_input(&line, ">", &list);
+			line += process_redirect(&line, ">", &list);
 		else if (*line == '|')
 			line += process_pipe(&list);
 		else
