@@ -6,21 +6,20 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:15:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/19 17:20:53 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/19 20:24:56 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// Anything else will be WORD
-// cmd1|cmd2>outfile will work, recognizes the pipe and redirections
-// Something like $VAR could be stored as WORD, so some values inside WORD might need to get expanded
-// Example: p$VAR -> during execution expanded as pwd
-// Examples: echo"hel  lo""hello"  OR echo"hello'hello" : one single token
-// "echo" or "e"ch""o -> works as echo
-// echo "ftyf" gjyfvgu ech"gcjty " ioh|
-// "e"ch""o : SHOULD BE ONE SINGLE token
-// "p""w""d": one token, works as pwd
+
+// Test cases:
+// cmd1|cmd2>outfile -> cmd1, pipe, cmd2, >, outfile
+// "This is a $VAR" -> We can have env_var inside identifiers
+// echo"hel  lo""hello" OR echo"hello'hello" -> one single token
+// "echo" or "e"ch""o -> works as echo, one single token
+// "p""w""d" -> works as pwd, one single token
+// echo"hello""hello" -> cmd not found echohellohello
 
 int	find_index(const char *s, int c)
 {
@@ -35,22 +34,26 @@ int	find_index(const char *s, int c)
 	}
 	return (0);
 }
-// We can have quotes inside word
-// Example echo"hello""hello" -> cmd not found echohellohello
-// Make sure the quotes are closed
-// pwd'd' -> valid, pw'd -> not valid
-// echo"hello'hi" -> valid as a token, echo"hello -> invalid token
 
-int	process_string(char **line, t_token **list)
+int	is_identifier(char c)
+{
+	if (c == '>' || c == '<' || c == '|')
+		return (1);
+	return (0);
+}
+
+// If I find a quote, I make sure that they are closed. I make sure all the quotes are closed.
+
+int	process_identifier(char **line, t_token **list)
 {
 	int		i;
-	char	*str;
 	int		pos;
+	char	*str;
 
 	i = 0;
-	while ((*line)[i] && (*line)[i] != '|' && (*line)[i] != '<' && (*line)[i] != '>' && !ft_strchr(WHITESPACE, (*line)[i]))
+	while ( (*line)[i] && !is_identifier((*line)[i]) && !ft_strchr(WHITESPACE, (*line)[i]))
 	{
-		if ((*line)[i] == 34 || (*line)[i] == 39 )
+		if ((*line)[i] == 34 || (*line)[i] == 39)
 		{
 			pos = find_index(*line + i, (*line)[i]);
 			if (!pos)
@@ -61,7 +64,7 @@ int	process_string(char **line, t_token **list)
 	}
 	str = (char *)malloc(sizeof(char) * (i + 1));
 	ft_strlcpy(str, *line, i + 1);
-	create_token(WORD, str, list);
+	create_token(IDENTIFIER, str, list);
 	*line += i;
-	return (0);
+	return (i);
 }
