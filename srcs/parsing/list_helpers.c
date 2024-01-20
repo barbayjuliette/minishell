@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   list_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/18 16:27:22 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/20 13:45:21 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	create_token(int type, char *str, t_token **list)
+int	create_token(int type, char *str, t_token **list)
 {
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
-	// if (!new)
-	// 	return (NULL);
+	if (!new)
+		return (1);
 	new->type = type;
 	new->value = str;
 	new->next = NULL;
 	ft_token_add_back(list, new);
+	return (0);
 }
 
 void	ft_token_add_back(t_token **lst, t_token *new)

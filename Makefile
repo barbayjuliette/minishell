@@ -32,4 +32,6 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+.PRECIOUS: ${OBJS}
+
 .SILENT: all clean fclean re
