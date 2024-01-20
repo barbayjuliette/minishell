@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:15:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/20 13:47:51 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/20 15:27:42 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ int	process_identifier(char **line, t_token **list)
 		{
 			pos = find_index(*line + i, (*line)[i]);
 			if (!pos)
-				return (error_tokens(3, list));
+				return (error_tokens(1, list));
 			i += pos;
 		}
 		i++;
 	}
 	str = (char *)malloc(sizeof(char) * (i + 1));
 	if (!str)
-		return (error_tokens(4, list));
+		return (error_tokens(2, list));
 	ft_strlcpy(str, *line, i + 1);
 	if (create_token(IDENTIFIER, str, list))
-		return (error_tokens(4, list));
+		return (error_tokens(2, list));
 	*line += i;
 	return (0);
 }

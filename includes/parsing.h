@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/20 13:34:36 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/20 15:28:00 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ typedef struct s_token
 // Tokenizer
 t_token	*get_tokens(char *line);
 int		create_token(int type, char *str, t_token **list);
+int		process_redirect_1(char **line, t_token **list);
+int		process_redirect_2(char **line, t_token **list);
 int		process_pipe(char **line, t_token **list);
-int		process_redirect(char **line, char *c, t_token **list);
 int		error_tokens(int error, t_token **list);
 int		find_index(const char *s, int c);
 int		process_identifier(char **line, t_token **list);
