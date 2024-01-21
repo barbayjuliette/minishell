@@ -6,13 +6,15 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/19 16:06:47 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/21 13:32:58 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // Read line
 // Exit when type exit
-// History
+// Add to history (except if the line is empty)
+// Create tokens based on the input
+// If tokens is NULL, it means there was an error (with message): new prompt
 
 #include "../../includes/minishell.h"
 
@@ -41,7 +43,10 @@ int main(void)
 		if (line && *line)
 			add_history(line);
 		if (is_exit(line))
+		{
+			free(line);
 			break ;
+		}
 		tokens = get_tokens(line);
 		if (!tokens)
 		{

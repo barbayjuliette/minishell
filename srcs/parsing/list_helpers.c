@@ -6,11 +6,13 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/20 13:45:21 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/21 13:28:16 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// Create the new token and add it to the back of the list
 
 int	create_token(int type, char *str, t_token **list)
 {

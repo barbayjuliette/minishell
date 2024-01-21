@@ -6,11 +6,13 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:32:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/20 15:29:24 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/21 13:34:10 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+// If tehre is an error, I print the error message and free the list
 
 int	error_tokens(int error, t_token **list)
 {
@@ -24,8 +26,10 @@ int	error_tokens(int error, t_token **list)
 
 // Environment variable cannot start with a digit
 // Only uppercase, lowercase, and underscores are allowed for environment variables
+// Not used here anymore. We only need to check if variable is valid during export, not when using it.
+// I leave it so you can use it at execution.
 
-int	env_var_is_valid(char *line, t_token **list)
+int	env_var_is_valid(char *line)
 {
 	int	i;
 
