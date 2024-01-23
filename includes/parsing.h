@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/20 15:28:00 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/23 17:44:05 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,26 @@
 
 typedef struct s_token
 {
-	int	type;
-	char *value;
-	struct s_token *next;
+	int				type;
+	char			*value;
+	struct s_token	*next;
 }	t_token;
+
+// typedef	struct s_io_data
+// {
+// 	int					type;
+// 	char				*value;
+// 	struct s_io_data	*next;
+// }	t_io_data;
+
+typedef struct s_cmd_table
+{
+	char				**cmds; 
+	struct s_token		*input;
+	struct s_token		*output;
+	struct s_cmd_table	*next;
+
+}	t_cmd_table;
 
 // Tokenizer
 t_token	*get_tokens(char *line);
@@ -42,5 +58,11 @@ int		is_identifier(char c);
 void	print_tokens(t_token *token);
 void	free_tokens(t_token **list);
 void	ft_token_add_back(t_token **lst, t_token *new);
+
+// Parsing
+
+t_cmd_table	*parsing(t_token *token, t_cmd_table **table);
+t_cmd_table *parse_cmd(t_token *token, t_cmd_table **table);
+void		print_command_table(t_cmd_table *table);
 
 #endif

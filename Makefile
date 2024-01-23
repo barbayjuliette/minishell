@@ -1,7 +1,8 @@
 MAIN = srcs/main/prompt.c \
 		srcs/parsing/lexer.c \
 		srcs/parsing/list_helpers.c \
-		srcs/parsing/strings.c
+		srcs/parsing/strings.c \
+		srcs/parsing/parsing.c
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/21 13:28:16 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/23 17:39:39 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	print_tokens(t_token *token)
 	int	i;
 
 	i = 0;
-	printf("Printing TOKENS: \n");
 	while (token)
 	{
 		printf("Item %d:, type: %d, value: %s\n", i, token->type, token->value);

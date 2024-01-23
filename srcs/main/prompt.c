@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/21 13:32:58 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/23 17:35:51 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	is_exit(char *line)
 
 int main(void)
 {
-	char	*line;
-	t_token	*tokens;
+	char		*line;
+	t_token		*tokens;
+	t_cmd_table	*table;
 
 	while (1)
 	{
@@ -53,7 +54,9 @@ int main(void)
 			free(line);
 			continue ;
 		}
-		print_tokens(tokens);
+		// print_tokens(tokens);
+		table = NULL;
+		parsing(tokens, &table);
 		free_tokens(&tokens);
 		free(line);
 	}
