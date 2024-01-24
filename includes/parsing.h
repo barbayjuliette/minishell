@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/23 17:44:05 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:52:51 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,9 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-// typedef	struct s_io_data
-// {
-// 	int					type;
-// 	char				*value;
-// 	struct s_io_data	*next;
-// }	t_io_data;
-
 typedef struct s_cmd_table
 {
-	char				**cmds; 
+	char				**cmds;
 	struct s_token		*input;
 	struct s_token		*output;
 	struct s_cmd_table	*next;
@@ -65,4 +58,6 @@ t_cmd_table	*parsing(t_token *token, t_cmd_table **table);
 t_cmd_table *parse_cmd(t_token *token, t_cmd_table **table);
 void		print_command_table(t_cmd_table *table);
 
+void	ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new);
+void	print_all_commands(t_cmd_table *table);
 #endif

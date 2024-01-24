@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 14:38:18 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 16:21:58 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,11 @@ int	get_redirections(t_token *token, t_cmd_table **table)
 	return (1);
 }
 
-int	get_cmds(t_token *token, t_cmd_table **table)
+int	get_length_cmd(t_token *token)
 {
-	int		i;
-	t_token	*start;
-	char	**cmd;
+	int	i;
 
 	i = 0;
-	start = token;
 	while (token && token->type != PIPE)
 	{
 		if (token->type > 2)
@@ -73,10 +70,17 @@ int	get_cmds(t_token *token, t_cmd_table **table)
 			i++;
 		token = token-> next;
 	}
-	token = start;
+	return (i);
+}
+
+int	get_cmds(t_token *token, t_cmd_table **table)
+{
+	int		i;
+	char	**cmd;
+
+	i = get_length_cmd(token);
 	cmd = (char **)malloc(sizeof(char *) * (i + 1));
 	// Add malloc error
-	token = start;
 	i = 0;
 	while (token != NULL && token->type != PIPE)
 	{
@@ -94,21 +98,52 @@ int	get_cmds(t_token *token, t_cmd_table **table)
 	return (1);
 }
 
+t_token	*update_token(t_token *token)
+{
+	token = token->next;
+	while (token && token->type != PIPE)
+		token = token->next;
+	return (token);
+}
+
 t_cmd_table	*parsing(t_token *token, t_cmd_table **table)
 {
 	t_cmd_table *new;
+	t_cmd_table *list;
 
+	list = NULL;
 	if (token->type == PIPE)
 	{
-		printf("Persing error");
+		printf("Parsing error\n");
 		return (NULL);
 	}
-	new = init_pipeline();
-	get_redirections(token, &new);
-	get_cmds(token, &new);
-
-	print_command_table(new);
+	while (token)
+	{
+		if (token->type == PIPE && !token->next)
+		{
+			printf("Parsing error\n");
+			return (NULL);
+		}
+		if (token->type == PIPE)
+			token = token->next;
+		new = init_pipeline();
+		ft_cmds_add_back(&list, new);
+		get_redirections(token, &new);
+		get_cmds(token, &new);
+		token = update_token(token);
+	}
+	print_all_commands(list);
 	return (new);
+}
+
+void	print_all_commands(t_cmd_table *table)
+{
+	while (table)
+	{
+		print_command_table(table);
+		table = table->next;
+		printf("\n");
+	}
 }
 
 void	print_command_table(t_cmd_table *table)
@@ -127,4 +162,21 @@ void	print_command_table(t_cmd_table *table)
 	print_tokens(table->input);
 	printf("OUTPUT:\n");
 	print_tokens(table->output);
+}
+
+void	ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new)
+{
+	t_cmd_table	*temp;
+
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	temp = *lst;
+	while (temp->next)
+	{
+		temp = temp->next;
+	}
+	temp->next = new;
 }
