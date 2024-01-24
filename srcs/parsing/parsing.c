@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 16:21:58 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:45:59 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 t_cmd_table	*init_pipeline(void)
 {
-	t_cmd_table *new;
+	t_cmd_table	*new;
 
 	new = (t_cmd_table *)malloc(sizeof(t_cmd_table));
+	if (!new)
+		return (NULL);
 	new->cmds = NULL;
 	new->input = NULL;
 	new->output = NULL;
@@ -25,33 +27,28 @@ t_cmd_table	*init_pipeline(void)
 }
 
 // Redirection must be followed by identifer
+
 int	get_redirections(t_token *token, t_cmd_table **table)
 {
 	while (token != NULL && token->type != PIPE)
 	{
-		if (token->type == REDIR_IN_SINGLE  || token->type == REDIR_IN_DOUBLE)
+		if (token->type == REDIR_IN_SINGLE || token->type == REDIR_IN_DOUBLE)
 		{
 			if (!token->next || token->next->type != IDENTIFIER)
-			{
-				printf("Parsing error\n");
-				return (-1);
-			}
+				return (1);
 			create_token(token->type, token->next->value, &((*table)->input));
 			token = token->next;
 		}
-		else if (token->type == REDIR_OUT_SINGLE  || token->type == REDIR_OUT_DOUBLE)
+		else if (token->type == REDIR_OUT_SINGLE || token->type == REDIR_OUT_DOUBLE)
 		{
 			if (!token->next || token->next->type != IDENTIFIER)
-			{
-				printf("Parsing error\n");
-				return (-1);
-			}
+				return (1);
 			create_token(token->type, token->next->value, &((*table)->output));
 			token = token->next;
 		}
 		token = token->next;
 	}
-	return (1);
+	return (0);
 }
 
 int	get_length_cmd(t_token *token)
@@ -66,7 +63,7 @@ int	get_length_cmd(t_token *token)
 			token = token->next->next;
 			continue ;
 		}
-		if (token->type == IDENTIFIER )
+		if (token->type == IDENTIFIER)
 			i++;
 		token = token-> next;
 	}
@@ -80,7 +77,8 @@ int	get_cmds(t_token *token, t_cmd_table **table)
 
 	i = get_length_cmd(token);
 	cmd = (char **)malloc(sizeof(char *) * (i + 1));
-	// Add malloc error
+	if (!cmd)
+		return (0);
 	i = 0;
 	while (token != NULL && token->type != PIPE)
 	{
@@ -98,85 +96,30 @@ int	get_cmds(t_token *token, t_cmd_table **table)
 	return (1);
 }
 
-t_token	*update_token(t_token *token)
-{
-	token = token->next;
-	while (token && token->type != PIPE)
-		token = token->next;
-	return (token);
-}
-
 t_cmd_table	*parsing(t_token *token, t_cmd_table **table)
 {
-	t_cmd_table *new;
-	t_cmd_table *list;
+	t_cmd_table	*new;
+	t_cmd_table	*list;
 
 	list = NULL;
 	if (token->type == PIPE)
-	{
-		printf("Parsing error\n");
 		return (NULL);
-	}
 	while (token)
 	{
 		if (token->type == PIPE && !token->next)
-		{
-			printf("Parsing error\n");
-			return (NULL);
-		}
+			return (error_parsing(1, &list));
 		if (token->type == PIPE)
 			token = token->next;
 		new = init_pipeline();
+		if (!new)
+			return (NULL);
 		ft_cmds_add_back(&list, new);
-		get_redirections(token, &new);
-		get_cmds(token, &new);
+		if (get_redirections(token, &new))
+			return (error_parsing(1, &list));
+		if (!get_cmds(token, &new))
+			return (error_parsing(2, &list));
 		token = update_token(token);
 	}
 	print_all_commands(list);
 	return (new);
-}
-
-void	print_all_commands(t_cmd_table *table)
-{
-	while (table)
-	{
-		print_command_table(table);
-		table = table->next;
-		printf("\n");
-	}
-}
-
-void	print_command_table(t_cmd_table *table)
-{
-	int	i;
-
-	i = 0;
-	printf("Commands: ");
-	while (table->cmds[i])
-	{
-		printf("%s ", table->cmds[i]);
-		i++;
-	}
-	printf("\n");
-	printf("INPUT:\n");
-	print_tokens(table->input);
-	printf("OUTPUT:\n");
-	print_tokens(table->output);
-}
-
-void	ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new)
-{
-	t_cmd_table	*temp;
-
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	temp = *lst;
-	while (temp->next)
-	{
-		temp = temp->next;
-	}
-	temp->next = new;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/23 17:39:39 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:42:28 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,68 @@ void	ft_token_add_back(t_token **lst, t_token *new)
 	temp->next = new;
 }
 
+void	free_tokens(t_token **list, int i)
+{
+	t_token	*current;
+	t_token	*next;
+
+	current = *list;
+	while (current)
+	{
+		next = current->next;
+		if (i)
+		{
+			free(current->value);
+			current->value = NULL;
+		}
+		free(current);
+		current = next;
+	}
+	*list = NULL;
+}
+
+void	ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new)
+{
+	t_cmd_table	*temp;
+
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	temp = *lst;
+	while (temp->next)
+	{
+		temp = temp->next;
+	}
+	temp->next = new;
+}
+
+void	free_commands(t_cmd_table **table)
+{
+	t_cmd_table	*current;
+	t_cmd_table	*next;
+	int	i;
+
+	current = *table;
+	i = 0;
+	while (current)
+	{
+		next = current->next;
+		free(current->cmds);
+		current->cmds = NULL;
+		free_tokens(&(current->input), 0);
+		current->input = NULL;
+		free_tokens(&(current->output), 0);
+		current->output = NULL;
+		free(current);
+		current = next;
+	}
+	*table = NULL;
+}
+
+
+// Functions that will be deleted later, only for testing
 void	print_tokens(t_token *token)
 {
 	int	i;
@@ -58,19 +120,30 @@ void	print_tokens(t_token *token)
 	}
 }
 
-void	free_tokens(t_token **list)
+void	print_all_commands(t_cmd_table *table)
 {
-	t_token	*current;
-	t_token	*next;
-
-	current = *list;
-	while (current)
+	while (table)
 	{
-		next = current->next;
-		free(current->value);
-		current->value = NULL;
-		free(current);
-		current = next;
+		print_command_table(table);
+		table = table->next;
+		printf("\n");
 	}
-	*list = NULL;
+}
+
+void	print_command_table(t_cmd_table *table)
+{
+	int	i;
+
+	i = 0;
+	printf("Commands: ");
+	while (table->cmds[i])
+	{
+		printf("%s ", table->cmds[i]);
+		i++;
+	}
+	printf("\n");
+	printf("INPUT:\n");
+	print_tokens(table->input);
+	printf("OUTPUT:\n");
+	print_tokens(table->output);
 }

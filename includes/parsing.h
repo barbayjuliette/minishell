@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 15:52:51 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:45:12 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,23 @@ int		is_identifier(char c);
 
 // Token list helpers
 void	print_tokens(t_token *token);
-void	free_tokens(t_token **list);
+void	free_tokens(t_token **list, int i);
 void	ft_token_add_back(t_token **lst, t_token *new);
 
 // Parsing
-
 t_cmd_table	*parsing(t_token *token, t_cmd_table **table);
+t_cmd_table	*init_pipeline(void);
+int			get_redirections(t_token *token, t_cmd_table **table);
+int			get_length_cmd(t_token *token);
+int			get_cmds(t_token *token, t_cmd_table **table);
 t_cmd_table *parse_cmd(t_token *token, t_cmd_table **table);
-void		print_command_table(t_cmd_table *table);
+t_cmd_table	*error_parsing(int i, t_cmd_table **list);
+t_token		*update_token(t_token *token);
 
-void	ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new);
+// Parsing list helpers
 void	print_all_commands(t_cmd_table *table);
+void	print_command_table(t_cmd_table *table);
+void	ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new);
+void	free_commands(t_cmd_table **table);
+
 #endif
