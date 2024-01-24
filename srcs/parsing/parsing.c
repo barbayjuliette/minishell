@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/23 18:09:01 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 14:38:18 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,60 +24,73 @@ t_cmd_table	*init_pipeline(void)
 	return (new);
 }
 
-t_cmd_table *parse_cmd(t_token *token, t_cmd_table **table)
+// Redirection must be followed by identifer
+int	get_redirections(t_token *token, t_cmd_table **table)
 {
-	t_cmd_table *new;
-	t_token		*start;
-	char		**cmd;
-	int			i;
-
-	start = token;
-	i = 0;
-	new = init_pipeline();
-	while (token != NULL && token->type == IDENTIFIER)
+	while (token != NULL && token->type != PIPE)
 	{
-		i++;
+		if (token->type == REDIR_IN_SINGLE  || token->type == REDIR_IN_DOUBLE)
+		{
+			if (!token->next || token->next->type != IDENTIFIER)
+			{
+				printf("Parsing error\n");
+				return (-1);
+			}
+			create_token(token->type, token->next->value, &((*table)->input));
+			token = token->next;
+		}
+		else if (token->type == REDIR_OUT_SINGLE  || token->type == REDIR_OUT_DOUBLE)
+		{
+			if (!token->next || token->next->type != IDENTIFIER)
+			{
+				printf("Parsing error\n");
+				return (-1);
+			}
+			create_token(token->type, token->next->value, &((*table)->output));
+			token = token->next;
+		}
 		token = token->next;
 	}
+	return (1);
+}
+
+int	get_cmds(t_token *token, t_cmd_table **table)
+{
+	int		i;
+	t_token	*start;
+	char	**cmd;
+
+	i = 0;
+	start = token;
+	while (token && token->type != PIPE)
+	{
+		if (token->type > 2)
+		{
+			token = token->next->next;
+			continue ;
+		}
+		if (token->type == IDENTIFIER )
+			i++;
+		token = token-> next;
+	}
+	token = start;
 	cmd = (char **)malloc(sizeof(char *) * (i + 1));
+	// Add malloc error
 	token = start;
 	i = 0;
-	while (token != NULL && token->type == IDENTIFIER)
+	while (token != NULL && token->type != PIPE)
 	{
+		if (token->type > 2)
+		{
+			token = token->next->next;
+			continue ;
+		}
 		cmd[i] = token->value;
 		token = token->next;
 		i++;
 	}
 	cmd[i] = NULL;
-	new->cmds = cmd;
-	return (new);
-}
-
-// Redirection must be followed by identifer
-
-int	get_redirections(t_token *token, t_cmd_table **table)
-{
-	while (token != NULL && token->type == IDENTIFIER)
-		token = token->next;
-	
-	while (token != NULL && token->type != PIPE && token->type != IDENTIFIER)
-	{
-		if (!token->next || token->next->type != IDENTIFIER)
-		{
-			printf("error\n");
-			return (-1);
-		}
-		if (token->type == REDIR_IN_SINGLE  || token->type == REDIR_IN_DOUBLE)
-			create_token(token->type, token->next->value, &((*table)->input));
-		if (token->type == REDIR_OUT_SINGLE || token->type == REDIR_OUT_DOUBLE)
-			create_token(token->type, token->next->value, &((*table)->output));
-		token = token->next->next;
-	}
-	// if (token->type == IDENTIFIER)
-	// {
-	// 	printf("HERE\n");
-	// 	return (-1);
-	// }
+	(*table)->cmds = cmd;
 	return (1);
 }
 
@@ -85,11 +98,15 @@ t_cmd_table	*parsing(t_token *token, t_cmd_table **table)
 {
 	t_cmd_table *new;
 
-	if (token->type == IDENTIFIER)
+	if (token->type == PIPE)
 	{
-		new = parse_cmd(token, table);
-		get_redirections(token, &new);
+		printf("Persing error");
+		return (NULL);
 	}
+	new = init_pipeline();
+	get_redirections(token, &new);
+	get_cmds(token, &new);
+
 	print_command_table(new);
 	return (new);
 }
