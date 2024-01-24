@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 17:42:28 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:58:09 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ void	free_commands(t_cmd_table **table)
 	*table = NULL;
 }
 
-
 // Functions that will be deleted later, only for testing
+
 void	print_tokens(t_token *token)
 {
 	int	i;
