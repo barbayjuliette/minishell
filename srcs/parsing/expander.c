@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/25 21:44:27 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/25 22:13:51 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*get_variable(char *str, int *i, int len)
 	prefix = ft_substr(str, 0, *i);
 	var = ft_substr(str + *i + 1, 0, len);
 	value = getenv(var);
+	if (!value)
+		value = "";
 	free(var);
 	suffix = ft_substr(str, len + *i + 1, ft_strlen(str) - len - *i - 1);
 	join = ft_strjoin(prefix, value);
