@@ -4,6 +4,7 @@ MAIN = srcs/main/prompt.c \
 		srcs/parsing/strings.c \
 		srcs/parsing/parsing.c \
 		srcs/parsing/parsing_helpers.c \
+		srcs/parsing/expander.c \
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror

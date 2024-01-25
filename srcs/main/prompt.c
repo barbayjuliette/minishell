@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 17:43:08 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/25 14:09:17 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,14 @@ int main(void)
 			continue ;
 		}
 		// print_tokens(tokens);
+		expand_all(tokens);
 		table = parsing(tokens, &table);
 		if (!table)
 		{
 			free(line);
 			continue ;
 		}
+		print_all_commands(table);
 		free_tokens(&tokens, 1);
 		free_commands(&table);
 		free(line);

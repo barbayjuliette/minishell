@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 17:45:12 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/25 14:19:24 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,9 @@ void	print_all_commands(t_cmd_table *table);
 void	print_command_table(t_cmd_table *table);
 void	ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new);
 void	free_commands(t_cmd_table **table);
+
+// Expanding
+void	expand_tilde(char **value);
+void	expand_all(t_token *token);
 
 #endif
