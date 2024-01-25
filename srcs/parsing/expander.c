@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/25 19:09:05 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/25 21:44:27 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int	get_variable_len(char *str)
 
 	i = 0;
 	while (str[i] && str[i] != ' ' && var_is_valid(str[i], i))
-	{
 		i++;
-	}
 	return (i);
 }
 
@@ -61,6 +59,25 @@ char	*get_variable(char *str, int *i, int len)
 
 // TEST: thisis$USER"xest"$USER
 
+char	*get_var_double(char *str, int *i)
+{
+	int	len;
+
+	(*i)++;
+	while (str[*i] && str[*i] != 34)
+	{
+		if (str[*i] == '$')
+		{
+			len = get_variable_len(str + *i + 1);
+			str = get_variable(str, i, len);
+		}
+		(*i)++;
+	}
+	return (str);
+}
+
+// Test: test"hello"$USER
+
 void	expand_variables(char **value)
 {
 	int		i;
@@ -71,10 +88,10 @@ void	expand_variables(char **value)
 	str = *value;
 	while (str[i])
 	{
-		if (str[i] == 32)
-			i += find_index(str + i + 1, 32);
+		if (str[i] == 39)
+			i += find_index(str + i + 1, 39);
 		else if (str[i] == 34)
-			i += find_index(str + i + 1, 34);
+			str = get_var_double(str, &i);
 		else if (str[i] == '$')
 		{
 			len = get_variable_len(str + i + 1);
