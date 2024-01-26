@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/25 22:13:51 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:56:38 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,12 @@ int	get_variable_len(char *str)
 	return (i);
 }
 
-char	*get_variable(char *str, int *i, int len)
+// char	*get_ext_status(char *str, int *i, int len)
+// {
+
+// }
+
+char	*get_variable(char *str, int *i, int len, int exit_status)
 {
 	char	*var;
 	char	*value;
@@ -42,12 +47,20 @@ char	*get_variable(char *str, int *i, int len)
 	char	*suffix;
 	char	*join;
 
+	if (str[*i + 1] && str[*i + 1] == '?')
+	{
+		len = 1;
+		value = ft_itoa(exit_status); // Malloced string
+	}
+	else
+	{
+		var = ft_substr(str + *i + 1, 0, len);
+		value = getenv(var);
+		if (!value)
+			value = "";
+		free(var);
+	}
 	prefix = ft_substr(str, 0, *i);
-	var = ft_substr(str + *i + 1, 0, len);
-	value = getenv(var);
-	if (!value)
-		value = "";
-	free(var);
 	suffix = ft_substr(str, len + *i + 1, ft_strlen(str) - len - *i - 1);
 	join = ft_strjoin(prefix, value);
 	free(str);
@@ -61,6 +74,8 @@ char	*get_variable(char *str, int *i, int len)
 
 // TEST: thisis$USER"xest"$USER
 
+// Replace 127 with exit status
+
 char	*get_var_double(char *str, int *i)
 {
 	int	len;
@@ -71,7 +86,7 @@ char	*get_var_double(char *str, int *i)
 		if (str[*i] == '$')
 		{
 			len = get_variable_len(str + *i + 1);
-			str = get_variable(str, i, len);
+			str = get_variable(str, i, len, 127);
 		}
 		(*i)++;
 	}
@@ -97,7 +112,7 @@ void	expand_variables(char **value)
 		else if (str[i] == '$')
 		{
 			len = get_variable_len(str + i + 1);
-			str = get_variable(str, &i, len);
+			str = get_variable(str, &i, len, 127);
 		}
 		i++;
 	}
