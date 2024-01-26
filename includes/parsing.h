@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/25 14:39:42 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/26 22:39:24 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,13 @@ void	free_commands(t_cmd_table **table);
 // Expanding
 void	expand_variables(char **value);
 void	expand_all(t_token *token);
+void	remove_quotes(char **value);
+char	*update_string_quotes(char *str, int *i, int c);
+char	*find_variable_quotes(char *str, int *i);
+char	*get_variable(char *str, int *i, int len, int exit_status);
+char	*update_string(char *str, int *i, int len, char *value);
+char	*get_value_variable(char *str, int i, int len);
+int		get_variable_len(char *str);
+int		var_is_valid(char c, int i);
 
 #endif

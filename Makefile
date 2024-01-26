@@ -5,6 +5,8 @@ MAIN = srcs/main/prompt.c \
 		srcs/parsing/parsing.c \
 		srcs/parsing/parsing_helpers.c \
 		srcs/parsing/expander.c \
+		srcs/parsing/expander_helpers.c \
+		srcs/parsing/remove_quotes.c \
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -14,7 +16,7 @@ OBJS = ${MAIN:.c=.o}
 
 all: ${NAME}
 
-# Remove the flags at compilation for testing
+# Removed the flags at compilation for testing
 
 $(NAME):
 		@echo "Compiling"
