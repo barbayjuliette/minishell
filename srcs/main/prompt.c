@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/21 13:32:58 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:43:08 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ int	is_exit(char *line)
 
 int main(void)
 {
-	char	*line;
-	t_token	*tokens;
+	char		*line;
+	t_token		*tokens;
+	t_cmd_table	*table;
 
 	while (1)
 	{
@@ -53,8 +54,15 @@ int main(void)
 			free(line);
 			continue ;
 		}
-		print_tokens(tokens);
-		free_tokens(&tokens);
+		// print_tokens(tokens);
+		table = parsing(tokens, &table);
+		if (!table)
+		{
+			free(line);
+			continue ;
+		}
+		free_tokens(&tokens, 1);
+		free_commands(&table);
 		free(line);
 	}
 	// rl_clear_history();

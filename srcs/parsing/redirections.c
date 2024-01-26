@@ -1,25 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay<marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/09 11:19:57 by jbarbay           #+#    #+#             */
-/*   Updated: 2023/09/09 11:20:02 by jbarbay          ###   ########.fr       */
+/*   Created: 2024/01/23 17:21:09 by jbarbay           #+#    #+#             */
+/*   Updated: 2024/01/23 17:25:10 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-// Iterates the list ’lst’ and applies the function
-// ’f’ on the content of each node.
-
-void	ft_lstiter(t_list *lst, void (*f)(void *))
-{
-	while (lst)
-	{
-		f(lst->content);
-		lst = lst->next;
-	}
-}
+#include "../../includes/minishell.h"

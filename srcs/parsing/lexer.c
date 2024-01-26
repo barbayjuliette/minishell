@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:32:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/21 13:34:10 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:43:34 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	error_tokens(int error, t_token **list)
 		printf("Syntax error: unclosed quotes\n");
 	else if (error == 2)
 		printf("Malloc error\n");
-	free_tokens(list);
+	free_tokens(list, 1);
 	return (1);
 }
 
