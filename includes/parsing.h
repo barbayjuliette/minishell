@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 17:45:12 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:50:01 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ t_cmd_table	*init_pipeline(void);
 int			get_redirections(t_token *token, t_cmd_table **table);
 int			get_length_cmd(t_token *token);
 int			get_cmds(t_token *token, t_cmd_table **table);
-t_cmd_table *parse_cmd(t_token *token, t_cmd_table **table);
-t_cmd_table	*error_parsing(int i, t_cmd_table **list);
+t_cmd_table	*error_parsing(int i, t_cmd_table **list, t_token **tokens);
 t_token		*update_token(t_token *token);
 
 // Parsing list helpers
