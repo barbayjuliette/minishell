@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 17:57:31 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:51:04 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ t_cmd_table	*init_pipeline(void)
 	new = (t_cmd_table *)malloc(sizeof(t_cmd_table));
 	if (!new)
 		return (NULL);
-	// new->cmds = NULL;
-	// new->input = NULL;
-	// new->output = NULL;
-	// new->next = NULL;
+	new->cmds = NULL;
+	new->input = NULL;
+	new->output = NULL;
+	new->next = NULL;
 	return (new);
 }
 
