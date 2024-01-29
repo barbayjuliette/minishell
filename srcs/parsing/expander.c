@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 18:15:10 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 18:26:52 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	expand_variables(char **value)
 	str = *value;
 	while (str[i])
 	{
-		printf("index: %d\n", i);
 		if (str[i] == 39)
 			i += (find_index(str + i + 1, 39) + 1);
 		else if (str[i] == 34)
