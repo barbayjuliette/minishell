@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:32:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 17:43:34 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 13:10:38 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	error_tokens(int error, t_token **list)
 }
 
 // Environment variable cannot start with a digit
-// Only uppercase, lowercase, and underscores are allowed for environment variables
+// Only uppercase, lowercase, digits, and underscores are allowed for environment variables
 // Not used here anymore. We only need to check if variable is valid during export, not when using it.
 // I leave it so you can use it at execution.
 

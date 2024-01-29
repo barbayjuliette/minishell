@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/25 14:03:46 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:26:14 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ t_cmd_table	*init_pipeline(void)
 	new = (t_cmd_table *)malloc(sizeof(t_cmd_table));
 	if (!new)
 		return (NULL);
-	// new->cmds = NULL;
-	// new->input = NULL;
-	// new->output = NULL;
-	// new->next = NULL;
+	new->cmds = NULL;
+	new->input = NULL;
+	new->output = NULL;
+	new->next = NULL;
 	return (new);
 }
 
@@ -107,26 +107,28 @@ t_cmd_table	*parsing(t_token *token, t_cmd_table **table)
 {
 	t_cmd_table	*new;
 	t_cmd_table	*list;
+	t_token		*first_token;
 
 	list = NULL;
-	if (token->type == PIPE)
+	first_token = token;
+	if (!token || token->type == PIPE)
 		return (NULL);
 	while (token)
 	{
 		if (token->type == PIPE && !token->next)
-			return (error_parsing(1, &list));
+			return (error_parsing(1, &list, &first_token));
 		if (token->type == PIPE)
 			token = token->next;
 		new = init_pipeline();
 		if (!new)
-			return (NULL);
+			return (error_parsing(2, &list, &first_token));
 		ft_cmds_add_back(&list, new);
 		if (get_redirections(token, &new))
-			return (error_parsing(1, &list));
+			return (error_parsing(1, &list, &first_token));
 		if (!get_cmds(token, &new))
-			return (error_parsing(2, &list));
+			return (error_parsing(2, &list, &first_token));
 		token = update_token(token);
 	}
 	// print_all_commands(list);
-	return (new);
+	return (list);
 }

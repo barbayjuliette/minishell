@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:40:27 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/26 23:10:08 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:41:24 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	remove_quotes(char **value)
 	str = *value;
 	while (str[i])
 	{
-		printf("STR[I] = %c\n", str[i]);
 		if (str[i] == 39)
 			str = update_string_quotes(str, &i, 39);
 		else if (str[i] == 34)

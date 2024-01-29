@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/25 14:09:17 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:40:18 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // Add to history (except if the line is empty)
 // Create tokens based on the input
 // If tokens is NULL, it means there was an error (with message): new prompt
+
+// valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
 
 #include "../../includes/minishell.h"
 
@@ -67,6 +69,6 @@ int main(void)
 		free_commands(&table);
 		free(line);
 	}
-	// rl_clear_history();
+	rl_clear_history();
 	return (0);
 }

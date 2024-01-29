@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 17:08:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/24 17:44:55 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:52:55 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ t_token	*update_token(t_token *token)
 	return (token);
 }
 
-t_cmd_table	*error_parsing(int i, t_cmd_table **list)
+t_cmd_table	*error_parsing(int i, t_cmd_table **list, t_token **tokens)
 {
 	if (i == 1)
 		printf("Parsing error\n");
 	else if (i == 2)
 		printf("Malloc error\n");
+	free_tokens(tokens, 1);
 	free_commands(list);
 	return ((t_cmd_table *)NULL);
 }

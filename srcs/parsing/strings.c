@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strings.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:15:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/20 15:27:42 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:50:44 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	find_index(const char *s, int c)
 	int	i;
 
 	i = 1;
+	if (!s[0])
+		return (0);
 	while (s[i])
 	{
 		if (s[i] == (unsigned char)c)
