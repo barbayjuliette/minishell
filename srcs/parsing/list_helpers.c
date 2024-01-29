@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 13:51:10 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 16:49:21 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,21 @@ void	free_commands(t_cmd_table **table)
 {
 	t_cmd_table	*current;
 	t_cmd_table	*next;
-	int	i;
 
 	current = *table;
-	i = 0;
 	while (current)
 	{
 		next = current->next;
+
 		free(current->cmds);
 		current->cmds = NULL;
+
 		free_tokens(&(current->input), 0);
 		current->input = NULL;
+
 		free_tokens(&(current->output), 0);
 		current->output = NULL;
+
 		free(current);
 		current = next;
 	}
