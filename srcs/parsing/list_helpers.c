@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 16:49:21 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:20:54 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	print_command_table(t_cmd_table *table)
 	printf("Commands: ");
 	while (table->cmds[i])
 	{
-		printf("%s ", table->cmds[i]);
+		printf("[%i]: %s ", i, table->cmds[i]);
 		i++;
 	}
 	printf("\n");

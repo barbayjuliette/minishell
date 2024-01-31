@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:40:27 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 17:41:24 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:15:51 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	remove_quotes(char **value)
 {
 	int		i;
 	char	*str;
-	int		len;
 
 	i = 0;
 	str = *value;

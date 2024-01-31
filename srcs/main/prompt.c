@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/31 15:07:25 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:13:06 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,12 @@ void	handle_sigint(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	(void)signal;
 }
 
 void	configure_signals(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = &handle_sigint;
@@ -54,19 +55,17 @@ void	configure_signals(void)
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
 	rl_catch_signals = 0;
-
 }
 
-int main(void)
+int	main(void)
 {
 	char		*line;
 	t_token		*tokens;
 	t_cmd_table	*table;
-	
+
 	configure_signals();
 	while (1)
 	{
-
 		line = readline("minishell$ ");
 		if (!line) // To handle CTRL + D
 			break ;
@@ -85,7 +84,7 @@ int main(void)
 		}
 		// print_tokens(tokens);
 		expand_all(tokens);
-		table = parsing(tokens, &table);
+		table = parsing(tokens);
 		if (!table)
 		{
 			free(line);
