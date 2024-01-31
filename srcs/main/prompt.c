@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/31 13:18:02 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:07:25 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 
 #include "../../includes/minishell.h"
 
-int	sigint = 0;
-
 int	is_exit(char *line)
 {
 	char	*trimmed;
 
+	if (ft_strlen(line) == 0)
+		return (0);
 	trimmed = ft_strtrim(line, WHITESPACE);
 	if (ft_strncmp(trimmed, "exit", 5) == 0)
 	{
@@ -48,11 +48,12 @@ void	configure_signals(void)
 {
 	struct sigaction sa;
 
+	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = &handle_sigint;
-	sigaction(SIGINT, &sa, NULL);
 	sa.sa_flags = SA_RESTART;
-	rl_catch_signals = 0;
+	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
+	rl_catch_signals = 0;
 
 }
 
@@ -67,6 +68,8 @@ int main(void)
 	{
 
 		line = readline("minishell$ ");
+		if (!line) // To handle CTRL + D
+			break ;
 		if (line && *line)
 			add_history(line);
 		if (is_exit(line))
