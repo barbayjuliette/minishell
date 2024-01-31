@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/31 13:11:54 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 13:18:02 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	configure_signals(void)
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_flags = SA_RESTART;
 	rl_catch_signals = 0;
+	signal(SIGQUIT, SIG_IGN);
 
 }
 
