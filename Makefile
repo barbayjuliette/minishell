@@ -8,7 +8,7 @@ MAIN = srcs/main/prompt.c \
 		srcs/parsing/expander_helpers.c \
 		srcs/parsing/remove_quotes.c \
 
-CC = cc
+CC = gcc -std=gnu99
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 NAME = minishell

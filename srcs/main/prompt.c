@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 17:40:18 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 13:11:54 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 // valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
 
 #include "../../includes/minishell.h"
+
+int	sigint = 0;
 
 int	is_exit(char *line)
 {
@@ -34,14 +36,35 @@ int	is_exit(char *line)
 	return (0);
 }
 
+void	handle_sigint(int signal)
+{
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	configure_signals(void)
+{
+	struct sigaction sa;
+
+	sa.sa_handler = &handle_sigint;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_flags = SA_RESTART;
+	rl_catch_signals = 0;
+
+}
+
 int main(void)
 {
 	char		*line;
 	t_token		*tokens;
 	t_cmd_table	*table;
-
+	
+	configure_signals();
 	while (1)
 	{
+
 		line = readline("minishell$ ");
 		if (line && *line)
 			add_history(line);
