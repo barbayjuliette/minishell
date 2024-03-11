@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 12:34:14 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:54:32 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,32 @@ void	configure_signals(void)
 	rl_catch_signals = 0;
 }
 
-int	main(void)
+int main(int argc, char **argv, char **envp)
 {
+	t_data		data;
 	char		*line;
 	t_token		*tokens;
 	t_cmd_table	*table;
 
 	configure_signals();
-	while (1)
+
+	(void)argc;
+	(void)argv;
+	init(&data, envp);
+
+	while (data.exit_flag)
 	{
+		int stdinIsTerminal = isatty(STDIN_FILENO);
+    	if (!stdinIsTerminal) 
+		{
+        	fprintf(stderr, "Error: Standard input is not a terminal.\n");
+        	return 1;
+    	}
 		line = readline("minishell$ ");
 		if (!line) // To handle CTRL + D
 			break ;
 		if (line && *line)
 			add_history(line);
-		if (is_exit(line))
-		{
-			free(line);
-			break ;
-		}
 		tokens = get_tokens(line);
 		if (!tokens)
 		{
@@ -90,11 +97,16 @@ int	main(void)
 			free(line);
 			continue ;
 		}
-		print_all_commands(table);
+		get_number_of_commands(table, &data);
+		execute(table, &data);
+
+		// print_all_commands(table);
 		free_tokens(&tokens, 1);
 		free_commands(&table);
 		free(line);
+		dup2(data.original_stdin, STDIN_FILENO);
+    	dup2(data.original_stdout, STDOUT_FILENO);
 	}
 	rl_clear_history();
-	return (0);
+	return (data.exit_code);
 }

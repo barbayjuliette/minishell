@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 12:32:32 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:59:19 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,6 @@ char		*get_variable(char *str, int *i, int len, int exit_status);
 char		*update_string(char *str, int *i, int len, char *value);
 char		*get_value_variable(char *str, int i, int len);
 int			get_variable_len(char *str);
-int			var_is_valid(char c);
+int			var_is_valid_exp(char c);
 
 #endif
