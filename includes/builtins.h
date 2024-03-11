@@ -13,36 +13,6 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# define NUM_BULTINS 7
-# define START_RD_LN 100
-
-typedef struct s_data	t_data;
-
-typedef int				(*t_builtin_ptr)(char **,t_data *);
-
-struct s_data
-{
-	int				exit_flag;
-	int				exit_code;
-	int				infile;
-	int				outfile;
-	int				number_of_commands;
-	int				original_stdin;
-	int				original_stdout;
-	int				last_command_flag;
-	int				fd_hdc;
-	char			*delim;
-	char			**envp;
-	char			*builtins[NUM_BULTINS];
-	t_builtin_ptr	f_ptrs[NUM_BULTINS];
-};
-
-typedef struct s_fd
-{
-	int		pfd[2];
-	int		fds[2];
-}	t_fd;
-
 int			init(t_data *data, char *envp[]);
 int			execute(t_cmd_table *table, t_data *data);
 int			ft_exit(char **args, t_data *data);

@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 14:59:19 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 16:53:34 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,6 @@
 # define REDIR_IN_DB 4
 # define REDIR_OUT_SINGLE 5
 # define REDIR_OUT_DB 6
-
-typedef struct s_token
-{
-	int				type;
-	char			*value;
-	struct s_token	*next;
-}	t_token;
-
-typedef struct s_cmd_table
-{
-	char				**cmds;
-	struct s_token		*input;
-	struct s_token		*output;
-	struct s_cmd_table	*next;
-
-}	t_cmd_table;
 
 // Tokenizer
 t_token		*get_tokens(char *line);
@@ -68,14 +52,14 @@ void		ft_cmds_add_back(t_cmd_table **lst, t_cmd_table *new);
 void		free_commands(t_cmd_table **table);
 
 // Expanding
-void		expand_variables(char **value);
-void		expand_all(t_token *token);
+void		expand_variables(char **value, t_data *data);
+void		expand_all(t_token *token, t_data *data);
 void		remove_quotes(char **value);
 char		*update_string_quotes(char *str, int *i, int c);
-char		*find_variable_quotes(char *str, int *i);
-char		*get_variable(char *str, int *i, int len, int exit_status);
+char		*find_variable_quotes(char *str, int *i, t_data *data);
+char		*get_variable(char *str, int *i, int len, t_data *data);
 char		*update_string(char *str, int *i, int len, char *value);
-char		*get_value_variable(char *str, int i, int len);
+char		*get_value_variable(char *str, int i, int len, t_data *data);
 int			get_variable_len(char *str);
 int			var_is_valid_exp(char c);
 

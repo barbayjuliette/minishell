@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:41:46 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 14:59:13 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 16:40:06 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ int	get_variable_len(char *str)
 	return (i);
 }
 
-char	*get_value_variable(char *str, int i, int len)
+char	*get_value_variable(char *str, int i, int len, t_data *data)
 {
 	char	*var;
 	char	*value;
 
 	var = ft_substr(str + i + 1, 0, len);
-	value = getenv(var);
+	value = ft_getenv(var, data);
 	if (!value)
 		value = "";
 	free(var);

@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 14:54:32 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 16:37:06 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		// print_tokens(tokens);
-		expand_all(tokens);
+		expand_all(tokens, &data);
 		table = parsing(tokens);
 		if (!table)
 		{
@@ -99,7 +99,6 @@ int main(int argc, char **argv, char **envp)
 		}
 		get_number_of_commands(table, &data);
 		execute(table, &data);
-
 		// print_all_commands(table);
 		free_tokens(&tokens, 1);
 		free_commands(&table);
