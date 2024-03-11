@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/31 15:13:06 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 12:34:14 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_exit(char *line)
 
 	if (ft_strlen(line) == 0)
 		return (0);
-	trimmed = ft_strtrim(line, WHITESPACE);
+	trimmed = ft_strtrim(line, WSPACE);
 	if (ft_strncmp(trimmed, "exit", 5) == 0)
 	{
 		free(trimmed);

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbarbay <jbarbay@student.42singapore.sg    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:36:19 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/15 22:36:27 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 12:25:33 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXEC_H
-#define EXEC_H
+# define EXEC_H
 
 #endif

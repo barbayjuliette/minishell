@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/31 15:12:57 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 12:04:06 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	get_redirections(t_token *token, t_cmd_table **table)
 {
 	while (token != NULL && token->type != PIPE)
 	{
-		if (token->type == REDIR_IN_SINGLE || token->type == REDIR_IN_DOUBLE)
+		if (token->type == REDIR_IN_SINGLE || token->type == REDIR_IN_DB)
 		{
 			if (!token->next || token->next->type != IDENTIFIER)
 				return (1);
 			create_token(token->type, token->next->value, &((*table)->input));
 			token = token->next;
 		}
-		else if (token->type == REDIR_OUT_SINGLE || token->type == REDIR_OUT_DOUBLE)
+		else if (token->type == REDIR_OUT_SINGLE || token->type == REDIR_OUT_DB)
 		{
 			if (!token->next || token->next->type != IDENTIFIER)
 				return (1);
@@ -71,7 +71,9 @@ int	get_length_cmd(t_token *token)
 	return (i);
 }
 
-// Then I add all the commands, but I have to skip the redirections + the identifier following the redirection
+// Then I add all the commands, but I have to skip the redirections
+//  + the identifier following the redirection
+
 int	get_cmds(t_token *token, t_cmd_table **table)
 {
 	int		i;

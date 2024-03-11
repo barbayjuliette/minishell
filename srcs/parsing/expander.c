@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/31 15:13:48 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 12:34:14 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	*get_variable(char *str, int *i, int len, int exit_status)
 
 // TEST: thisis$USER"xest"$USER
 // Replace 127 with exit status
+// if (str[*i] == '$' && str[*i + 1] && str[*i + 1] != ' ' && str[*i + 1] != 34)
 
 char	*find_variable_quotes(char *str, int *i)
 {
@@ -69,7 +70,8 @@ char	*find_variable_quotes(char *str, int *i)
 	(*i)++;
 	while (str[*i] && str[*i] != 34)
 	{
-		if (str[*i] == '$' && str[*i + 1] && str[*i + 1] != ' ' && str[*i + 1] != 34)
+		if (str[*i] == '$' && str[*i + 1]
+			&& !ft_strchr(WSPACE, str[*i + 1]) && str[*i + 1] != 34)
 		{
 			len = get_variable_len(str + *i + 1);
 			str = get_variable(str, i, len, 127);
