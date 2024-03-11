@@ -1,0 +1,12 @@
+total 64
+drwxr-xr-x  6 jbarbay 2023_singapore   139 Mar 11 15:54 .
+drwx------ 36 jbarbay 2023_singapore  4096 Mar 11 15:52 ..
+-rwxrwxrwx  1 jbarbay 2023_singapore     0 Mar 11 15:54 1.txt
+-rw-r--r--  1 jbarbay 2023_singapore     0 Mar 11 15:55 2.txt
+drwxr-xr-x  9 jbarbay 2023_singapore  4096 Mar 11 15:25 .git
+drwxr-xr-x  2 jbarbay 2023_singapore    74 Mar 11 14:41 includes
+drwxr-xr-x  2 jbarbay 2023_singapore  4096 Mar 11 15:37 libft
+-rw-r--r--  1 jbarbay 2023_singapore  1231 Mar 11 15:13 Makefile
+-rwxr-xr-x  1 jbarbay 2023_singapore 43568 Mar 11 15:37 minishell
+-rw-r--r--  1 jbarbay 2023_singapore   136 Jan 29 17:18 readline.supp
+drwxr-xr-x  6 jbarbay 2023_singapore    61 Mar 11 14:47 srcs

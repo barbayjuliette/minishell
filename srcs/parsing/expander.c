@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 12:34:14 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 16:44:22 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*update_string(char *str, int *i, int len, char *value)
 	return (str);
 }
 
-char	*get_variable(char *str, int *i, int len, int exit_status)
+char	*get_variable(char *str, int *i, int len, t_data *data)
 {
 	char	*value;
 	int		malloced;
@@ -43,7 +43,7 @@ char	*get_variable(char *str, int *i, int len, int exit_status)
 	if (str[*i + 1] && str[*i + 1] == '?')
 	{
 		len = 1;
-		value = ft_itoa(exit_status);
+		value = ft_itoa(data->exit_code);
 		malloced = 1;
 	}
 	else if (len == 0)
@@ -52,7 +52,7 @@ char	*get_variable(char *str, int *i, int len, int exit_status)
 		len = 1;
 	}
 	else
-		value = get_value_variable(str, *i, len);
+		value = get_value_variable(str, *i, len, data);
 	str = update_string(str, i, len, value);
 	if (malloced)
 		free(value);
@@ -63,7 +63,7 @@ char	*get_variable(char *str, int *i, int len, int exit_status)
 // Replace 127 with exit status
 // if (str[*i] == '$' && str[*i + 1] && str[*i + 1] != ' ' && str[*i + 1] != 34)
 
-char	*find_variable_quotes(char *str, int *i)
+char	*find_variable_quotes(char *str, int *i, t_data *data)
 {
 	int	len;
 
@@ -74,7 +74,7 @@ char	*find_variable_quotes(char *str, int *i)
 			&& !ft_strchr(WSPACE, str[*i + 1]) && str[*i + 1] != 34)
 		{
 			len = get_variable_len(str + *i + 1);
-			str = get_variable(str, i, len, 127);
+			str = get_variable(str, i, len, data);
 		}
 		(*i)++;
 	}
@@ -83,7 +83,7 @@ char	*find_variable_quotes(char *str, int *i)
 
 // Test: test"hello"$USER
 
-void	expand_variables(char **value)
+void	expand_variables(char **value, t_data *data)
 {
 	int		i;
 	char	*str;
@@ -96,22 +96,22 @@ void	expand_variables(char **value)
 		if (str[i] == 39)
 			i += (find_index(str + i + 1, 39) + 1);
 		else if (str[i] == 34)
-			str = find_variable_quotes(str, &i);
+			str = find_variable_quotes(str, &i, data);
 		else if (str[i] == '$' && str[i + 1] && str[i + 1] != ' ')
 		{
 			len = get_variable_len(str + i + 1);
-			str = get_variable(str, &i, len, 127);
+			str = get_variable(str, &i, len, data);
 		}
 		i++;
 	}
 	*value = str;
 }
 
-void	expand_all(t_token *token)
+void	expand_all(t_token *token, t_data *data)
 {
 	while (token)
 	{
-		expand_variables(&(token->value));
+		expand_variables(&(token->value),data);
 		remove_quotes(&(token->value));
 		token = token->next;
 	}
