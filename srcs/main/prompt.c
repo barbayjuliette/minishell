@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 16:44:39 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:40:18 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // Add to history (except if the line is empty)
 // Create tokens based on the input
 // If tokens is NULL, it means there was an error (with message): new prompt
+
+// valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
 
 #include "../../includes/minishell.h"
 
@@ -55,14 +57,15 @@ int main(void)
 			continue ;
 		}
 		// print_tokens(tokens);
+		expand_all(tokens);
 		table = parsing(tokens, &table);
 		if (!table)
 		{
 			free(line);
 			continue ;
 		}
-		free_tokens(&tokens, 1);
 		print_all_commands(table);
+		free_tokens(&tokens, 1);
 		free_commands(&table);
 		free(line);
 	}

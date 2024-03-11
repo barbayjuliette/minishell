@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 16:52:21 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:26:14 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ t_cmd_table	*parsing(t_token *token, t_cmd_table **table)
 			return (error_parsing(2, &list, &first_token));
 		token = update_token(token);
 	}
+	// print_all_commands(list);
 	return (list);
 }
