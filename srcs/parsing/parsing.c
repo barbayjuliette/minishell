@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 17:26:14 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:12:57 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	get_cmds(t_token *token, t_cmd_table **table)
 // I add the redirections then the commands to the pipeline
 // Then I update the token to get to the end of the pipeline and process the next one if there is one.
 
-t_cmd_table	*parsing(t_token *token, t_cmd_table **table)
+t_cmd_table	*parsing(t_token *token)
 {
 	t_cmd_table	*new;
 	t_cmd_table	*list;

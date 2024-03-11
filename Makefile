@@ -8,7 +8,7 @@ MAIN = srcs/main/prompt.c \
 		srcs/parsing/expander_helpers.c \
 		srcs/parsing/remove_quotes.c \
 
-CC = cc
+CC = gcc -std=gnu99
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 NAME = minishell
@@ -21,7 +21,7 @@ all: ${NAME}
 $(NAME):
 		@echo "Compiling"
 		@make all -C libft
-		$(CC) $(MAIN) -L./libft -lft -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME} && echo "Everything compiled!"
+		$(CC) $(CFLAGS) $(MAIN) -L./libft -lft -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME} && echo "Everything compiled!"
 
 %.o: %.c
 	${CC} $(CFLAGS) -c $<

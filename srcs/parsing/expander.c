@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 18:26:52 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:13:48 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*update_string(char *str, int *i, int len, char *value)
 char	*get_variable(char *str, int *i, int len, int exit_status)
 {
 	char	*value;
-	char	*val;
 	int		malloced;
 
 	malloced = 0;

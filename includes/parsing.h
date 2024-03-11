@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/01/29 17:21:08 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:15:25 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	free_tokens(t_token **list, int i);
 void	ft_token_add_back(t_token **lst, t_token *new);
 
 // Parsing
-t_cmd_table	*parsing(t_token *token, t_cmd_table **table);
+t_cmd_table	*parsing(t_token *token);
 t_cmd_table	*init_pipeline(void);
 int			get_redirections(t_token *token, t_cmd_table **table);
 int			get_length_cmd(t_token *token);
@@ -77,6 +77,6 @@ char	*get_variable(char *str, int *i, int len, int exit_status);
 char	*update_string(char *str, int *i, int len, char *value);
 char	*get_value_variable(char *str, int i, int len);
 int		get_variable_len(char *str);
-int		var_is_valid(char c, int i);
+int		var_is_valid(char c);
 
 #endif
