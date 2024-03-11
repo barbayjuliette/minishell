@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 16:37:06 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:10:45 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,6 @@
 // valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
 
 #include "../../includes/minishell.h"
-
-int	is_exit(char *line)
-{
-	char	*trimmed;
-
-	if (ft_strlen(line) == 0)
-		return (0);
-	trimmed = ft_strtrim(line, WSPACE);
-	if (ft_strncmp(trimmed, "exit", 5) == 0)
-	{
-		free(trimmed);
-		return (1);
-	}
-	free(trimmed);
-	return (0);
-}
 
 void	handle_sigint(int signal)
 {

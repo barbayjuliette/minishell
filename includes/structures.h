@@ -6,9 +6,12 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:52:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 16:53:40 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 17:15:04 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef STRUCTURES_H
+# define STRUCTURES_H
 
 # define NUM_BULTINS 7
 # define START_RD_LN 100
@@ -56,3 +59,4 @@ typedef struct s_cmd_table
 
 }	t_cmd_table;
 
+#endif
