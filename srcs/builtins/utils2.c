@@ -15,23 +15,24 @@
 char	*ft_strdup2(const char *s1)
 {
 	int		len;
-	int		i;
-	char	*copy;
 	char	*tmp;
 
 	len = ft_strlen(s1);
-	i = 0;
-	copy = (char *)malloc(sizeof(char) * (len + 4));
 	tmp = (char *)malloc(sizeof(char) * (len + 4));
-	if (!copy)
+	if (!tmp)
 		return (NULL);
+	int i = 0;
 	while (s1[i])
 	{
-		copy[i] = s1[i];
+		tmp[i] = s1[i];
 		i++;
 	}
-	tmp = ft_strjoin(copy, "=''\0");
-	free(copy);
+	tmp = ft_strjoin(tmp, "=''");
+	if (!tmp)
+	{
+		free(tmp);
+		return (NULL);
+	}
 	return (tmp);
 }
 
@@ -59,6 +60,10 @@ int	add_new_name(char *name, t_data *data)
 	tmp_env[i] = ft_strdup2(name);
 	tmp_env[i + 1] = NULL;
 	data->envp = tmp_env;
+	i = -1;
+	while (tmp_env[++i])
+		free(tmp_env[i]);
+	free(tmp_env);
 	return (0);
 }
 
@@ -74,7 +79,7 @@ char	*get_name(char *s)
 	else
 		len_name = equal_sign_pos - s;
 	env_name = (char *)malloc(len_name + 1);
-	ft_strlcpy(env_name, s, len_name + 1);
+	ft_strlcpy(env_name, s, len_name);
 	return (env_name);
 }
 
@@ -89,7 +94,7 @@ char	*get_value(char *s)
 		return (NULL);
 	len_value = ft_strlen(equal_sign_pos + 1);
 	value = (char *)malloc(len_value + 1);
-	ft_strlcpy(value, equal_sign_pos + 1, len_value + 1);
+	ft_strlcpy(value, equal_sign_pos + 1, len_value);
 	return (value);
 }
 
