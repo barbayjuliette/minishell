@@ -18,6 +18,8 @@ void	child(t_data *data)
 
 	while (1)
 	{
+	signal(SIGQUIT, SIG_DFL); // CTRL+\.
+	signal(SIGINT, SIG_DFL); // CTRL+C
 		str = readline("> ");
 		if (ft_strcmp(str, data->delim) == 0)
 			break ;
@@ -71,5 +73,6 @@ int	run_heredoc(t_cmd_table *table, t_data *data)
 		}
 		tmp->input = tmp->input->next;
 	}
+	free(tmp);
 	return (0);
 }
