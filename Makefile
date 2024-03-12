@@ -1,4 +1,5 @@
 MAIN = srcs/main/prompt.c \
+		srcs/main/init.c \
 		srcs/parsing/lexer.c \
 		srcs/parsing/list_helpers.c \
 		srcs/parsing/strings.c \
@@ -7,7 +8,6 @@ MAIN = srcs/main/prompt.c \
 		srcs/parsing/expander.c \
 		srcs/parsing/expander_helpers.c \
 		srcs/parsing/remove_quotes.c \
-		srcs/init/init.c \
 		srcs/builtins/ft_exit.c \
 		srcs/builtins/ft_echo.c \
 		srcs/builtins/ft_pwd.c \

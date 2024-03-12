@@ -13,7 +13,7 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-int			init(t_data *data, char *envp[]);
+int			init(t_data *data, char **envp);
 int			execute(t_cmd_table *table, t_data *data);
 int			ft_exit(char **args, t_data *data);
 int			ft_echo(char **args, t_data *data);
@@ -30,7 +30,6 @@ int			ft_unset(char **args, t_data *data);
 int			ft_compare(char *str, char *var);
 int			print_env(t_data *data);
 void		execute_single_command(int i, char **cmd, t_data *data);
-void		execute_single_execve_command(char **cmd, t_data *data);
 int			get_fd(t_cmd_table *table, t_data *data);
 int			run_heredoc(t_cmd_table *table, t_data *data);
 int			ft_strcontains(const char *s, const char c);

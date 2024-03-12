@@ -6,11 +6,12 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 16:44:22 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/11 18:41:14 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+extern int	g_status;
 
 // Environment variable cannot start with a digit
 // Only uppercase, lowercase, digits and underscores are allowed for env var.
@@ -43,7 +44,7 @@ char	*get_variable(char *str, int *i, int len, t_data *data)
 	if (str[*i + 1] && str[*i + 1] == '?')
 	{
 		len = 1;
-		value = ft_itoa(data->exit_code);
+		value = ft_itoa(g_status);
 		malloced = 1;
 	}
 	else if (len == 0)

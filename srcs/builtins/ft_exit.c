@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+extern int	g_status;
 
 int	ft_exit(char **args, t_data *data)
 {
@@ -19,7 +20,7 @@ int	ft_exit(char **args, t_data *data)
 	if (args[1])
 	{
 		write(STDERR_FILENO, "minishell: exit: too many args\n", 32);
-		data->exit_code = 1;
+		g_status = 1;
 		return (1);
 	}
 	return (0);
