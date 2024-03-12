@@ -23,6 +23,7 @@ typedef int				(*t_builtin_ptr)(char **,t_data *);
 struct s_data
 {
 	int				exit_flag;
+	int				exit_code;
 	int				infile;
 	int				outfile;
 	int				number_of_commands;
