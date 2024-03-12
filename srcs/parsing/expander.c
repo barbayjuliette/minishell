@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 18:41:14 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:32:56 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,21 @@ char	*update_string(char *str, int *i, int len, char *value)
 char	*get_variable(char *str, int *i, int len, t_data *data)
 {
 	char	*value;
-	int		malloced;
 
-	malloced = 0;
 	if (str[*i + 1] && str[*i + 1] == '?')
 	{
 		len = 1;
 		value = ft_itoa(g_status);
-		malloced = 1;
 	}
 	else if (len == 0)
 	{
-		value = "";
+		value = ft_strdup("");
 		len = 1;
 	}
 	else
 		value = get_value_variable(str, *i, len, data);
 	str = update_string(str, i, len, value);
-	if (malloced)
-		free(value);
+	free(value);
 	return (str);
 }
 
@@ -115,6 +111,34 @@ void	expand_all(t_token *token, t_data *data)
 		expand_variables(&(token->value),data);
 		remove_quotes(&(token->value));
 		token = token->next;
+	}
+}
+
+void	remove_empty_tokens(t_token **token)
+{
+	t_token	*current;
+	t_token	*next;
+
+	current = *token;
+	if (current && ft_strlen(current->value) == 0)
+	{
+		*token = (*token)->next;
+		free(current->value);
+		current->value = NULL;
+		free(current);
+	}
+	current = *token;
+	while (current)
+	{
+		next = current->next;
+		if (next && ft_strlen(next->value) == 0)
+		{
+			free(next->value);
+			next->value = NULL;
+			current->next = next->next;
+			free(next);
+		}
+		current = current->next;
 	}
 }
 
