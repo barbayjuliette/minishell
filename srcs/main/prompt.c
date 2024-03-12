@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/12 13:36:08 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:22:04 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int main(int argc, char **argv, char **envp)
 		}
 		// print_tokens(tokens);
 		expand_all(tokens, &data);
+		remove_empty_tokens(&tokens);
+		// print_tokens(tokens);
 		table = parsing(tokens);
 		if (!table)
 		{

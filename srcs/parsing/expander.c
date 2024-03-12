@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 18:41:14 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:23:12 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,18 @@ char	*get_variable(char *str, int *i, int len, t_data *data)
 		len = 1;
 	}
 	else
+	{
+		malloced = 1; // ADDED
 		value = get_value_variable(str, *i, len, data);
+	}
 	str = update_string(str, i, len, value);
+	// printf("THIS IS THE VALUE: %s\n", value);
+	// printf("LENGTH VALUE: %d\n", ft_strlen(value));
 	if (malloced)
+	{
+		// printf("GOING TO FREE\n");
 		free(value);
+	}
 	return (str);
 }
 
@@ -115,6 +123,34 @@ void	expand_all(t_token *token, t_data *data)
 		expand_variables(&(token->value),data);
 		remove_quotes(&(token->value));
 		token = token->next;
+	}
+}
+
+void	remove_empty_tokens(t_token **token)
+{
+	t_token	*current;
+	t_token	*next;
+
+	current = *token;
+	if (current && ft_strlen(current->value) == 0)
+	{
+		*token = (*token)->next;
+		free(current->value);
+		current->value = NULL;
+		free(current);
+	}
+	current = *token;
+	while (current)
+	{
+		next = current->next;
+		if (next && ft_strlen(next->value) == 0)
+		{
+			free(next->value);
+			next->value = NULL;
+			current->next = next->next;
+			free(next);
+		}
+		current = current->next;
 	}
 }
 

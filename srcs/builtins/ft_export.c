@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akolgano <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:02:32 by akolgano          #+#    #+#             */
-/*   Updated: 2024/02/27 16:02:33 by akolgano         ###   ########.fr       */
+/*   Updated: 2024/03/12 17:02:10 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,25 @@ int	add_new_var(char *name, t_data *data, char *full)
 
 char	*ft_getenv(char *name, t_data *data)
 {
-	int	i;
+	int		i;
+	char	*str;
 
 	i = 0;
 	while (data->envp[i])
 	{
-		if (ft_compare1(name, get_name(data->envp[i])) == 0)
+		str = get_name(data->envp[i]);
+		if (ft_compare1(name, str) == 0)
+		{
+			free(str);
 			return (get_value(data->envp[i]));
+		}
 		else
+		{
+			free(str);
 			i++;
+		}
 	}
-	return (0);
+	return (ft_strdup(""));
 }
 
 int	check_if_exist(char *name, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:28:38 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 16:53:34 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 14:27:16 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ char		*update_string(char *str, int *i, int len, char *value);
 char		*get_value_variable(char *str, int i, int len, t_data *data);
 int			get_variable_len(char *str);
 int			var_is_valid_exp(char c);
+void		remove_empty_tokens(t_token **token);
 
 #endif
