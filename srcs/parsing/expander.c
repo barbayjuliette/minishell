@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 13:54:06 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/12 17:23:12 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:32:56 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,33 +38,21 @@ char	*update_string(char *str, int *i, int len, char *value)
 char	*get_variable(char *str, int *i, int len, t_data *data)
 {
 	char	*value;
-	int		malloced;
 
-	malloced = 0;
 	if (str[*i + 1] && str[*i + 1] == '?')
 	{
 		len = 1;
 		value = ft_itoa(g_status);
-		malloced = 1;
 	}
 	else if (len == 0)
 	{
-		value = "";
+		value = ft_strdup("");
 		len = 1;
 	}
 	else
-	{
-		malloced = 1; // ADDED
 		value = get_value_variable(str, *i, len, data);
-	}
 	str = update_string(str, i, len, value);
-	// printf("THIS IS THE VALUE: %s\n", value);
-	// printf("LENGTH VALUE: %d\n", ft_strlen(value));
-	if (malloced)
-	{
-		// printf("GOING TO FREE\n");
-		free(value);
-	}
+	free(value);
 	return (str);
 }
 

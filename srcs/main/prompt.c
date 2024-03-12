@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/12 17:22:04 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:43:31 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,27 +75,15 @@ int main(int argc, char **argv, char **envp)
 		if (line && *line)
 			add_history(line);
 		tokens = get_tokens(line);
-		if (!tokens)
-		{
-			free(line);
-			continue ;
-		}
-		// print_tokens(tokens);
+		free(line);
 		expand_all(tokens, &data);
 		remove_empty_tokens(&tokens);
-		// print_tokens(tokens);
 		table = parsing(tokens);
-		if (!table)
-		{
-			free(line);
-			continue ;
-		}
 		get_number_of_commands(table, &data);
 		execute(table, &data);
 		// print_all_commands(table);
 		free_tokens(&tokens, 1);
 		free_commands(&table);
-		free(line);
 		dup2(data.original_stdin, STDIN_FILENO);
     	dup2(data.original_stdout, STDOUT_FILENO);
 	}
