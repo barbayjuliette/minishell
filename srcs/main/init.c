@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+extern int	g_status;
 
 static void	_ft_init_builtins(t_data *data)
 {
@@ -32,7 +33,7 @@ static void	_ft_init_builtins(t_data *data)
 
 int	init(t_data *data, char **envp)
 {
-	data->exit_code = 0;
+	g_status = 0;
 	data->exit_flag = 1;
 	data->number_of_commands = 0;
 	data->envp = envp;

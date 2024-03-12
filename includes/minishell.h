@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:36:30 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 17:14:26 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 13:10:16 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@
 # include <limits.h>
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <sys/ioctl.h>
+# include <stdbool.h>
+# include <termios.h>
 
 # define WSPACE " \n\t\f\v\r"
 
 // Signals
 void	configure_signals(void);
 void	handle_sigint(int signal);
+int		setup_terminal(bool echo_ctl);
 
 #endif

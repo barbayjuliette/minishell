@@ -6,39 +6,51 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 17:10:45 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/12 13:36:08 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// Read line
-// Exit when type exit
-// Add to history (except if the line is empty)
-// Create tokens based on the input
-// If tokens is NULL, it means there was an error (with message): new prompt
 
 // valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
 
 #include "../../includes/minishell.h"
 
+int	g_status;
+
+int	setup_terminal(bool echo_ctl)
+{
+	int				status;
+	struct termios	terminos_p;
+
+	status = tcgetattr(STDOUT_FILENO, &terminos_p);
+	if (status == -1)
+		return (1);
+	if (echo_ctl)
+		terminos_p.c_lflag |= ECHOCTL;
+	else
+		terminos_p.c_lflag &= ~(ECHOCTL);
+	status = tcsetattr(STDOUT_FILENO, TCSANOW, &terminos_p);
+	if (status == -1)
+		return (1);
+	return (0);
+}
+
 void	handle_sigint(int signal)
 {
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	(void)signal;
+	if (signal == SIGINT)
+	{
+		g_status = 130;
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		(void)signal;
+	}
 }
 
 void	configure_signals(void)
 {
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_handler = &handle_sigint;
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
-	rl_catch_signals = 0;
+	signal(SIGINT, handle_sigint); // CTRL+C
+	signal(SIGQUIT, SIG_IGN); // CTRL+\.
 }
 
 int main(int argc, char **argv, char **envp)
@@ -48,20 +60,15 @@ int main(int argc, char **argv, char **envp)
 	t_token		*tokens;
 	t_cmd_table	*table;
 
-	configure_signals();
-
+	g_status = 0;
 	(void)argc;
 	(void)argv;
 	init(&data, envp);
 
+	setup_terminal(false);
 	while (data.exit_flag)
 	{
-		int stdinIsTerminal = isatty(STDIN_FILENO);
-    	if (!stdinIsTerminal) 
-		{
-        	fprintf(stderr, "Error: Standard input is not a terminal.\n");
-        	return 1;
-    	}
+		configure_signals();
 		line = readline("minishell$ ");
 		if (!line) // To handle CTRL + D
 			break ;
@@ -91,5 +98,5 @@ int main(int argc, char **argv, char **envp)
     	dup2(data.original_stdout, STDOUT_FILENO);
 	}
 	rl_clear_history();
-	return (data.exit_code);
+	return (g_status);
 }
