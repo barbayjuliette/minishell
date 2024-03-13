@@ -94,7 +94,6 @@ int	create_process(t_cmd_table *table, t_data *data)
 	int		*pipefds;
 	int		status;
 	int		i;
-	int exit_code;
 
 	pipefds = malloc(sizeof(int) * (2 * data->number_of_commands));
 	process(pipefds, table, data);
