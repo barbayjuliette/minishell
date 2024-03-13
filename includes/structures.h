@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:52:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 18:36:25 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/13 10:47:29 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef int				(*t_builtin_ptr)(char **,t_data *);
 struct s_data
 {
 	int				exit_flag;
+	int				exit_code;
 	int				infile;
 	int				outfile;
 	int				number_of_commands;

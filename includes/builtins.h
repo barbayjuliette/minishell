@@ -13,7 +13,7 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-int			init(t_data *data, char **envp);
+int			init(t_data *data, char **envp, int argc, char **argv);
 int			execute(t_cmd_table *table, t_data *data);
 int			ft_exit(char **args, t_data *data);
 int			ft_echo(char **args, t_data *data);

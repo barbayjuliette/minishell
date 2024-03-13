@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-extern int	g_status;
 
 char	*find_path(char *cmd, char **envp)
 {
@@ -51,7 +50,7 @@ void	ft_execve(char **cmd, t_data *data)
 	if (!env_value)
 	{
 		path = cmd[0];
-		g_status = 1;
+		data->exit_code = 1;
 		ft_putendl_fd("env: No such file or directory", STDOUT_FILENO);
 	}
 	else
@@ -59,7 +58,7 @@ void	ft_execve(char **cmd, t_data *data)
 	if (!path)
 	{
 		ft_putstr_fd(cmd[0], 2);
-		g_status = 1;
+		data->exit_code = 1;
 		ft_putendl_fd(": No such file or directory", 2);
 	}
 	signal(SIGQUIT, SIG_DFL); // CTRL+\.
@@ -68,7 +67,7 @@ void	ft_execve(char **cmd, t_data *data)
 	{
 		ft_putstr_fd(cmd[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
-		g_status = 127;
+		data->exit_code = 127;
 		exit(EXIT_FAILURE);
 	}
 }
