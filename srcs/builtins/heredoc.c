@@ -18,8 +18,8 @@ void	child(t_data *data)
 
 	while (1)
 	{
-	signal(SIGQUIT, SIG_DFL); // CTRL+\.
-	signal(SIGINT, SIG_IGN); // CTRL+C
+		signal(SIGQUIT, SIG_DFL); // CTRL+\.
+		signal(SIGINT, SIG_DFL); // CTRL+C
 		str = readline("> ");
 		if (ft_strcmp(str, data->delim) == 0)
 			break ;
