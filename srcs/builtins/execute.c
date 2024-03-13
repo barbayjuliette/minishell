@@ -68,8 +68,16 @@ int	process(int *pipefds, t_cmd_table *table, t_data *data)
 	j = 0;
 	while (table)
 	{
-		if (get_fd(table, data) == 1)
-			break ;
+		while (get_fd(table, data) == 1)
+		{
+			if (table->next)
+				table = table->next;
+			else
+			{				
+				data->exit_code = 1;
+				return(1) ;
+			}
+		}
 		pid = fork();
 		if (pid == 0)
 			execute_process(pipefds, table, data, j);
@@ -86,6 +94,7 @@ int	create_process(t_cmd_table *table, t_data *data)
 	int		*pipefds;
 	int		status;
 	int		i;
+	int exit_code;
 
 	pipefds = malloc(sizeof(int) * (2 * data->number_of_commands));
 	process(pipefds, table, data);
@@ -99,6 +108,11 @@ int	create_process(t_cmd_table *table, t_data *data)
 	while (i < data->number_of_commands + 1)
 	{
 		wait(&status);
+		if (WIFEXITED(status))
+		{
+			if (data->exit_code != 1)
+				data->exit_code = WEXITSTATUS(status);
+		}
 		i++;
 	}
 	free(pipefds);
@@ -120,6 +134,8 @@ int	execute(t_cmd_table *table, t_data *data)
 	{
 		if (get_fd(table, data) != 1)
 			execute_single_command(i, table->cmds, data);
+		else
+			data->exit_code = 1;
 	}
 	else
 	{

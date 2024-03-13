@@ -37,6 +37,7 @@ int	init(t_data *data, char **envp, int argc, char **argv)
 	setup_terminal(false);
 	data->exit_code = 0;
 	data->exit_flag = 1;
+	data->exit_code = 0;
 	data->number_of_commands = 0;
 	data->envp = envp;
 	data->last_command_flag = 0;
