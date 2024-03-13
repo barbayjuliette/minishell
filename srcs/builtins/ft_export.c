@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akolgano <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:02:32 by akolgano          #+#    #+#             */
-/*   Updated: 2024/02/27 16:02:33 by akolgano         ###   ########.fr       */
+/*   Updated: 2024/03/13 14:19:36 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_getenv(char *name, t_data *data)
 			i++;
 		free(env_name);
 	}
-	return (0);
+	return (ft_strdup(""));
 }
 
 int	check_if_exist(char *name, t_data *data)
