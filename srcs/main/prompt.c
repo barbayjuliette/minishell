@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/12 17:43:31 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/13 11:02:08 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,10 @@
 
 #include "../../includes/minishell.h"
 
-int	g_status;
-
-int	setup_terminal(bool echo_ctl)
-{
-	int				status;
-	struct termios	terminos_p;
-
-	status = tcgetattr(STDOUT_FILENO, &terminos_p);
-	if (status == -1)
-		return (1);
-	if (echo_ctl)
-		terminos_p.c_lflag |= ECHOCTL;
-	else
-		terminos_p.c_lflag &= ~(ECHOCTL);
-	status = tcsetattr(STDOUT_FILENO, TCSANOW, &terminos_p);
-	if (status == -1)
-		return (1);
-	return (0);
-}
-
 void	handle_sigint(int signal)
 {
 	if (signal == SIGINT)
 	{
-		g_status = 130;
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -60,12 +39,7 @@ int main(int argc, char **argv, char **envp)
 	t_token		*tokens;
 	t_cmd_table	*table;
 
-	g_status = 0;
-	(void)argc;
-	(void)argv;
-	init(&data, envp);
-
-	setup_terminal(false);
+	init(&data, envp, argc, argv);
 	while (data.exit_flag)
 	{
 		configure_signals();
@@ -76,9 +50,13 @@ int main(int argc, char **argv, char **envp)
 			add_history(line);
 		tokens = get_tokens(line);
 		free(line);
+		if (!tokens)
+			continue ;
 		expand_all(tokens, &data);
 		remove_empty_tokens(&tokens);
 		table = parsing(tokens);
+		if (!table)
+			continue ;
 		get_number_of_commands(table, &data);
 		execute(table, &data);
 		// print_all_commands(table);
@@ -88,5 +66,5 @@ int main(int argc, char **argv, char **envp)
     	dup2(data.original_stdout, STDOUT_FILENO);
 	}
 	rl_clear_history();
-	return (g_status);
+	return (data.exit_code);
 }

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-extern int	g_status;
 
 static void	_ft_init_builtins(t_data *data)
 {
@@ -31,9 +30,12 @@ static void	_ft_init_builtins(t_data *data)
 	data->f_ptrs[6] = &ft_unset;
 }
 
-int	init(t_data *data, char **envp)
+int	init(t_data *data, char **envp, int argc, char **argv)
 {
-	g_status = 0;
+	(void)argc;
+	(void)argv;
+	setup_terminal(false);
+	data->exit_code = 0;
 	data->exit_flag = 1;
 	data->exit_code = 0;
 	data->number_of_commands = 0;
@@ -45,5 +47,23 @@ int	init(t_data *data, char **envp)
 	_ft_init_builtins(data);
 	data->original_stdin = dup(STDIN_FILENO);
 	data->original_stdout = dup(STDOUT_FILENO);
+	return (0);
+}
+
+int	setup_terminal(bool echo_ctl)
+{
+	int				status;
+	struct termios	terminos_p;
+
+	status = tcgetattr(STDOUT_FILENO, &terminos_p);
+	if (status == -1)
+		return (1);
+	if (echo_ctl)
+		terminos_p.c_lflag |= ECHOCTL;
+	else
+		terminos_p.c_lflag &= ~(ECHOCTL);
+	status = tcsetattr(STDOUT_FILENO, TCSANOW, &terminos_p);
+	if (status == -1)
+		return (1);
 	return (0);
 }
