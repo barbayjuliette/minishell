@@ -31,6 +31,7 @@ struct s_data
 	int				original_stdout;
 	int				last_command_flag;
 	int				fd_hdc;
+	int ptr_allocated_by_program;
 	char			*delim;
 	char			**envp;
 	char			*builtins[NUM_BULTINS];
