@@ -37,13 +37,13 @@ int	init(t_data *data, char **envp, int argc, char **argv)
 	setup_terminal(false);
 	data->exit_code = 0;
 	data->exit_flag = 1;
-	data->exit_code = 0;
 	data->number_of_commands = 0;
 	data->envp = envp;
 	data->last_command_flag = 0;
 	data->outfile = STDOUT_FILENO;
 	data->infile = STDIN_FILENO;
 	data->delim = NULL;
+	data->ptr_allocated_by_program = 0;
 	_ft_init_builtins(data);
 	data->original_stdin = dup(STDIN_FILENO);
 	data->original_stdout = dup(STDOUT_FILENO);
