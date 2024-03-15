@@ -37,7 +37,7 @@ t_cmd_table	*copylinkedlist(t_cmd_table	*head)
 		}
 		head = head->next;
 	}
-	free(newnode);
+	//free(newnode);
 	return (newhead);
 }
 
