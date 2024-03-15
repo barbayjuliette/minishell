@@ -13,6 +13,8 @@ MAIN = srcs/main/prompt.c \
 		srcs/builtins/ft_pwd.c \
 		srcs/builtins/ft_cd.c \
 		srcs/builtins/ft_export.c \
+		srcs/builtins/ft_export_utils.c \
+		srcs/builtins/ft_export_names.c \
 		srcs/builtins/ft_env.c \
 		srcs/builtins/ft_unset.c \
 		srcs/builtins/execute.c \
