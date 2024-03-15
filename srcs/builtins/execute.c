@@ -68,6 +68,7 @@ int	process(int *pipefds, t_cmd_table *table, t_data *data)
 	j = 0;
 	while (table)
 	{
+		data->exit_code = 0;
 		while (get_fd(table, data) == 1)
 		{
 			if (table->next)
@@ -118,11 +119,15 @@ int	create_process(t_cmd_table *table, t_data *data)
 	return (0);
 }
 
-int	execute(t_cmd_table *table, t_data *data)
+int	execute(t_cmd_table *original_table, t_data *data)
 {
 	int		i;
 	char	*name;
+	t_cmd_table *table;
+	t_cmd_table *org;
 
+	org = original_table;
+	table = original_table;
 	name = table->cmds[0];
 	data->outfile = STDOUT_FILENO;
 	data->infile = STDIN_FILENO;
@@ -141,5 +146,6 @@ int	execute(t_cmd_table *table, t_data *data)
 		create_process(table, data);
 		close(data->outfile);
 	}
+	original_table = org;
 	return (0);
 }

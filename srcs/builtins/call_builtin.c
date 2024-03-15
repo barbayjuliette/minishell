@@ -15,7 +15,8 @@
 void	ft_callbuiltin(int i, char **cmd, t_data *data)
 {
 	(*data->f_ptrs[i])(cmd, data);
-	exit(0);
+
+	exit(data->exit_code);
 }
 
 void	execute_single_command(int i, char **cmd, t_data *data)
@@ -37,7 +38,9 @@ void	execute_single_command(int i, char **cmd, t_data *data)
 			exit(EXIT_FAILURE);
 		close(data->outfile);
 	}
-	(*data->f_ptrs[i])(cmd, data);
+	int status = (*data->f_ptrs[i])(cmd, data);
+	if (WIFEXITED(status))
+    	data->exit_code = WEXITSTATUS(status);   
 	dup2(original_stdin, STDIN_FILENO);
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdin);
