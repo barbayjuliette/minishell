@@ -55,10 +55,12 @@ int main(int argc, char **argv, char **envp)
 		expand_all(tokens, &data);
 		remove_empty_tokens(&tokens);
 		table = parsing(tokens);
+		data.tokens = tokens;
 		if (!table)
 			continue ;
 		get_number_of_commands(table, &data);
 		execute(table, &data);
+		//printf("----------------%s\n", data.tmp_name[0]);
 		// print_all_commands(table);
 		free_tokens(&tokens, 1);
 		free_commands(&table);
@@ -66,5 +68,14 @@ int main(int argc, char **argv, char **envp)
     	dup2(data.original_stdout, STDOUT_FILENO);
 	}
 	rl_clear_history();
+	free(data.tmp_name);
+	if (data.envp != NULL && data.ptr_allocated_by_program != -1)
+	{
+        free(data.envp);
+        //data.envp = NULL;
+
+    }
+    
+    
 	return (data.exit_code);
 }

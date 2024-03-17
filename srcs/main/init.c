@@ -43,7 +43,9 @@ int	init(t_data *data, char **envp, int argc, char **argv)
 	data->outfile = STDOUT_FILENO;
 	data->infile = STDIN_FILENO;
 	data->delim = NULL;
-	data->ptr_allocated_by_program = 0;
+	data->ptr_allocated_by_program = -1;
+	data->blocking_flag = 0;
+	data->tmp_name = NULL;
 	_ft_init_builtins(data);
 	data->original_stdin = dup(STDIN_FILENO);
 	data->original_stdout = dup(STDOUT_FILENO);
