@@ -48,13 +48,13 @@ int			get_fd(t_cmd_table *table, t_data *data);
 int			check_if_builtins(char *str, t_data *data);
 int			get_number_of_commands(t_cmd_table *table, t_data *data);
 char	*add_var_evp_02(char *name, int flag, int length, t_data *data);
-void	add_new_name_02(char *name, char **tmp_env, int i, t_data *data);
+void	add_new_name_02(char *name, char **tmp_env, int i, int j, t_data *data);
 int	find_name(char *name, t_data *data);
 void	change_name(char *name, char *tmp_name, int i, t_data *data);
 int	check_name_02(char *name, char flag, int i);
 int	find_value(int i, t_data *data);
 int	check_name(char *name, char flag);
 char	*ft_getenv_for_env(char *name, t_data *data);
-char	*add_var_evp_02(char *name, int flag, int length, t_data *data);
+//char	*add_var_evp_02(char *name, int flag, int length, t_data *data);
 void	add_var_evp(char *name, int flag, t_data *data);
 #endif

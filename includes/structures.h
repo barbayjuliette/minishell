@@ -20,24 +20,6 @@ typedef struct s_data	t_data;
 
 typedef int				(*t_builtin_ptr)(char **,t_data *);
 
-struct s_data
-{
-	int				exit_flag;
-	int				exit_code;
-	int				infile;
-	int				outfile;
-	int				number_of_commands;
-	int				original_stdin;
-	int				original_stdout;
-	int				last_command_flag;
-	int				fd_hdc;
-	int ptr_allocated_by_program;
-	char			*delim;
-	char			**envp;
-	char			*builtins[NUM_BULTINS];
-	t_builtin_ptr	f_ptrs[NUM_BULTINS];
-};
-
 typedef struct s_fd
 {
 	int		pfd[2];
@@ -59,5 +41,30 @@ typedef struct s_cmd_table
 	struct s_cmd_table	*next;
 
 }	t_cmd_table;
+
+struct s_data
+{
+	int				exit_flag;
+	int				exit_code;
+	int				infile;
+	int				outfile;
+	int				number_of_commands;
+	int				original_stdin;
+	int				original_stdout;
+	int				last_command_flag;
+	int				fd_hdc;
+	int ptr_allocated_by_program;
+	int blocking_flag;
+	char			*delim;
+	char			**envp;
+	char			*tmp_name;
+	t_cmd_table     *tbl;
+	t_token			*tokens;
+	int		*pipefds;
+	char			*builtins[NUM_BULTINS];
+	t_builtin_ptr	f_ptrs[NUM_BULTINS];
+};
+
+
 
 #endif
