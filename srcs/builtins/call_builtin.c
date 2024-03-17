@@ -15,7 +15,9 @@
 void	ft_callbuiltin(int i, char **cmd, t_data *data)
 {
 	(*data->f_ptrs[i])(cmd, data);
-
+		free(data->pipefds);
+		free_tokens(&data->tokens, 1);
+		free_commands(&data->tbl);
 	exit(data->exit_code);
 }
 
