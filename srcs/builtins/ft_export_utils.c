@@ -35,7 +35,8 @@ void	add_value_02(char *name, int i, char *res, t_data *data)
 		j++;
 	}
 	res[j] = '\0';
-	free(data->envp[i]);
+	if (data->envp[i])
+		free(data->envp[i]);
 	data->envp[i] = res;
 }
 
@@ -78,24 +79,58 @@ void	add_var_evp(char *name, int flag, t_data *data)
 	tmp_name = add_var_evp_02(name, flag, length, data);
 	if (!tmp_name)
 		return ;
+	//if (data->tmp_name)
+	//	free(data->tmp_name);	
+	data->tmp_name = tmp_name;
 	i = find_name(name, data);
 	if (i == length)
 		add_new_name(tmp_name, length, data);
 	else
 		change_name(name, tmp_name, i, data);
+	data->ptr_allocated_by_program = i;
+	//free(name);
 }
+char	*delete_plus(char *name)
+{
+	int		i;
+	int		j;
+	char	*res;
 
+	i = ft_strlen(name);
+	res = (char *)malloc(sizeof(char) * i);
+	if (!res)
+		return (res);
+	i = 0;
+	j = 0;
+	while (name[i])
+	{
+		if (name[i] == '+')
+			i++;
+		else
+		{
+			res[j] = name[i];
+			i++;
+			j++;
+		}
+	}
+	res[j] = '\0';
+	return (res);
+}
 char	*add_var_evp_02(char *name, int flag, int length, t_data *data)
 {
 	char	*tmp_name;
 	int		i;
 
-	(void)length;
 	if (flag == 10)
 	{
 		i = find_name(name, data);
-		add_value(name, i, data);
-		return (NULL);
+		if (i == length)
+			tmp_name = delete_plus(name);
+		else
+		{
+			add_value(name, i, data);
+			return (NULL);
+		}
 	}
 	else
 	{

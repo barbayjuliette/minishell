@@ -69,8 +69,14 @@ void	ft_execve(char **cmd, t_data *data)
 	if (execve(path, cmd, data->envp) == -1)
 	{
 		perror(cmd[0]);
-		free(cmd);
-		free(path);
+		//free(cmd);
+		if (path != cmd[0])
+			free(path);
+		//free(data->tbl);
+		//free(data->tokens);
+		free(data->pipefds);
+		free_tokens(&data->tokens, 1);
+		free_commands(&data->tbl);
 		exit(127);
 	}
 }

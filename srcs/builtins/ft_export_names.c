@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../includes/minishell.h"
+#include <assert.h>
 
 int	add_new_name(char *name, int length, t_data *data)
 {
@@ -21,17 +22,17 @@ int	add_new_name(char *name, int length, t_data *data)
 		free(name);
 		return (1);
 	}
-	add_new_name_02(name, tmp_env, 0, data);
+	add_new_name_02(name, tmp_env, 0, 0, data );
+	if (data->ptr_allocated_by_program != -1)
+		free(data->envp);
 	data->envp = tmp_env;
 	return (0);
 }
 
-void	add_new_name_02(char *name, char **tmp_env, int i, t_data *data)
+void	add_new_name_02(char *name, char **tmp_env, int i, int j, t_data *data)
 {
-	int	flag;
-	int	j;
+	char	flag;
 
-	j = 0;
 	flag = 1;
 	while (data->envp[i])
 	{
@@ -69,7 +70,6 @@ void	change_name(char *name, char *tmp_name, int i, t_data *data)
 	{
 		free(data->envp[i]);
 		data->envp[i] = tmp_name;
-		//free(tmp_name);
 	}
 }
 

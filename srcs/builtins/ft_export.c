@@ -135,7 +135,6 @@ int	ft_export(char **argv, t_data *data)
 		if (flag)
 		{
 			add_var_evp(argv[i], flag, data);
-			data->ptr_allocated_by_program = 1;
 		}
 		else
 		{

@@ -48,7 +48,15 @@ int	execute_process(int *pipefds, t_cmd_table *table, t_data *data, int j)
 		close(pipefds[i]);
 		i++;
 	}
-	execute_node(table->cmds, data);
+	//printf("cmd: %s\n", table->cmds[0]);
+	//printf("cmd: %s\n", table->cmds[1]);
+	//printf("data->infile: %d\n", data->infile);
+	//printf("blocking_flag: %d\n", data->blocking_flag);
+	if (data->blocking_flag == 1 && (!ft_compare1(table->cmds[0], "cat") || !ft_compare1(table->cmds[0], "grep")) && data->infile == 0)
+		exit (0);
+	else
+
+		execute_node(table->cmds, data);
 	return (0);
 }
 
@@ -69,13 +77,16 @@ int	process(int *pipefds, t_cmd_table *table, t_data *data)
 	while (table)
 	{
 		data->exit_code = 0;
+		//printf("get_fd(table, data): %d\n", get_fd(table, data));
 		while (get_fd(table, data) == 1)
 		{
+
 			if (table->next)
 				table = table->next;
 			else
 			{				
 				data->exit_code = 1;
+				data->blocking_flag = 1;
 				return(1) ;
 			}
 		}
@@ -96,7 +107,9 @@ int	create_process(t_cmd_table *table, t_data *data)
 	int		status;
 	int		i;
 
+	status = 0;
 	pipefds = malloc(sizeof(int) * (2 * data->number_of_commands));
+	data->pipefds = pipefds;
 	process(pipefds, table, data);
 	i = 0;
 	while (i < 2 * data->number_of_commands)
@@ -124,10 +137,10 @@ int	execute(t_cmd_table *original_table, t_data *data)
 	int		i;
 	char	*name;
 	t_cmd_table *table;
-	t_cmd_table *org;
 
-	org = original_table;
 	table = original_table;
+	data->tbl = original_table;
+
 	name = table->cmds[0];
 	data->outfile = STDOUT_FILENO;
 	data->infile = STDIN_FILENO;
@@ -146,6 +159,5 @@ int	execute(t_cmd_table *original_table, t_data *data)
 		create_process(table, data);
 		close(data->outfile);
 	}
-	original_table = org;
 	return (0);
 }
