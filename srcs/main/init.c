@@ -46,6 +46,9 @@ int	init(t_data *data, char **envp, int argc, char **argv)
 	data->ptr_allocated_by_program = -1;
 	data->blocking_flag = 0;
 	data->tmp_name = NULL;
+	data->ft_cd_flag = 0;
+	data->ft_export_flag = 0;
+	data->tmp_names = NULL;
 	_ft_init_builtins(data);
 	data->original_stdin = dup(STDIN_FILENO);
 	data->original_stdout = dup(STDOUT_FILENO);
@@ -68,4 +71,14 @@ int	setup_terminal(bool echo_ctl)
 	if (status == -1)
 		return (1);
 	return (0);
+}
+
+void clean_before_exit(t_data *data)
+{
+	rl_clear_history();
+	free_tokens(&data->tmp_names, 1);
+	if (data->envp != NULL && data->ptr_allocated_by_program != -1 && data->ft_cd_flag)
+        free(data->envp[data->ptr_allocated_by_program]);
+	if (data->envp != NULL && data->ptr_allocated_by_program != -1 && data->ft_export_flag)
+        free(data->envp);
 }
