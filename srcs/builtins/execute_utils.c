@@ -47,20 +47,16 @@ int	get_fd_in(t_cmd_table *table, t_data *data)
 	t_token	*lst;
 
 	lst = table->input;
-
 	if (!lst || !lst->value)
 		infile = STDIN_FILENO;
 	else
 	{
-		//infile = 0;
 		while (lst)
 		{
-			//printf("data->fd_hdc: %d\n", data->fd_hdc);
 			if (lst->type == 4)
 				infile = data->fd_hdc;
 			else
 				infile = open(lst->value, O_RDONLY);
-			//printf(": %d\n", infile);
 			if (infile == -1)
 			{
 				perror(lst->value);
@@ -69,7 +65,6 @@ int	get_fd_in(t_cmd_table *table, t_data *data)
 			lst = lst->next;
 		}
 	}
-	//printf(": %d\n", infile);
 	return (infile);
 }
 

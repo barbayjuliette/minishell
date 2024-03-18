@@ -41,18 +41,28 @@ char	*find_path(char *cmd, char **envp)
 	return (cmd);
 }
 
+void	handle_error(char **cmd, char	*path, t_data *data)
+{
+	ft_putstr_fd(cmd[0], 2);
+	ft_putendl_fd(": command not found", 2);
+	if (path != cmd[0])
+		free(path);
+	free(data->pipefds);
+	free_tokens(&data->tokens, 1);
+	free_commands(&data->tbl);
+	exit(127);
+}
+
 void	ft_execve(char **cmd, t_data *data)
 {
 	char	*path;
 	char	*env_value;
-
 
 	env_value = ft_getenv_for_env("PATH", data);
 	if (!env_value)
 	{
 		path = cmd[0];
 		data->exit_code = 1;
-		//ft_putendl_fd("env: No such file or directory", STDOUT_FILENO);
 	}
 	else
 		path = find_path(cmd[0], data->envp);
@@ -62,21 +72,10 @@ void	ft_execve(char **cmd, t_data *data)
 		free(cmd);
 		ft_putstr_fd(cmd[0], 2);
 		data->exit_code = 1;
-		ft_putendl_fd(": No such file or directory", 2);
+		ft_putendl_fd(": command not found", 2);
 	}
-	signal(SIGQUIT, SIG_DFL); // CTRL+\.
-	signal(SIGINT, SIG_IGN); // CTRL+C
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_IGN);
 	if (execve(path, cmd, data->envp) == -1)
-	{
-		perror(cmd[0]);
-		//free(cmd);
-		if (path != cmd[0])
-			free(path);
-		//free(data->tbl);
-		//free(data->tokens);
-		free(data->pipefds);
-		free_tokens(&data->tokens, 1);
-		free_commands(&data->tbl);
-		exit(127);
-	}
+		handle_error(cmd, path, data);
 }

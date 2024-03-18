@@ -15,9 +15,9 @@
 void	ft_callbuiltin(int i, char **cmd, t_data *data)
 {
 	(*data->f_ptrs[i])(cmd, data);
-		free(data->pipefds);
-		free_tokens(&data->tokens, 1);
-		free_commands(&data->tbl);
+	free(data->pipefds);
+	free_tokens(&data->tokens, 1);
+	free_commands(&data->tbl);
 	exit(data->exit_code);
 }
 
@@ -25,6 +25,7 @@ void	execute_single_command(int i, char **cmd, t_data *data)
 {
 	int	original_stdin;
 	int	original_stdout;
+	int	status;
 
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
@@ -40,9 +41,9 @@ void	execute_single_command(int i, char **cmd, t_data *data)
 			exit(EXIT_FAILURE);
 		close(data->outfile);
 	}
-	int status = (*data->f_ptrs[i])(cmd, data);
+	status = (*data->f_ptrs[i])(cmd, data);
 	if (WIFEXITED(status))
-    	data->exit_code = WEXITSTATUS(status);   
+		data->exit_code = WEXITSTATUS(status);
 	dup2(original_stdin, STDIN_FILENO);
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdin);

@@ -35,8 +35,7 @@ void	add_value_02(char *name, int i, char *res, t_data *data)
 		j++;
 	}
 	res[j] = '\0';
-	if (data->envp[i])
-		free(data->envp[i]);
+	create_token(0, res, &data->tmp_names);
 	data->envp[i] = res;
 }
 
@@ -79,17 +78,16 @@ void	add_var_evp(char *name, int flag, t_data *data)
 	tmp_name = add_var_evp_02(name, flag, length, data);
 	if (!tmp_name)
 		return ;
-	//if (data->tmp_name)
-	//	free(data->tmp_name);	
-	data->tmp_name = tmp_name;
+	create_token(0, tmp_name, &data->tmp_names);
 	i = find_name(name, data);
 	if (i == length)
 		add_new_name(tmp_name, length, data);
 	else
 		change_name(name, tmp_name, i, data);
 	data->ptr_allocated_by_program = i;
-	//free(name);
+	data->ft_export_flag = 1;
 }
+
 char	*delete_plus(char *name)
 {
 	int		i;
@@ -116,6 +114,7 @@ char	*delete_plus(char *name)
 	res[j] = '\0';
 	return (res);
 }
+
 char	*add_var_evp_02(char *name, int flag, int length, t_data *data)
 {
 	char	*tmp_name;
@@ -138,17 +137,4 @@ char	*add_var_evp_02(char *name, int flag, int length, t_data *data)
 		tmp_name = ft_strdup(name);
 	}
 	return (tmp_name);
-}
-
-int	find_value(int i, t_data *data)
-{
-	int	j;
-
-	j = 0;
-	while (data->envp[i][j] != '=' && data->envp[i][j])
-		j++;
-	if (data->envp[i][j] == '=')
-		return (++j);
-	else
-		return (j);
 }
