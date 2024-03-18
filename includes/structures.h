@@ -42,6 +42,7 @@ typedef struct s_cmd_table
 
 }	t_cmd_table;
 
+
 struct s_data
 {
 	int				exit_flag;
@@ -55,11 +56,14 @@ struct s_data
 	int				fd_hdc;
 	int ptr_allocated_by_program;
 	int blocking_flag;
+	int ft_cd_flag;
+	int ft_export_flag;
 	char			*delim;
 	char			**envp;
 	char			*tmp_name;
 	t_cmd_table     *tbl;
 	t_token			*tokens;
+	t_token		*tmp_names;
 	int		*pipefds;
 	char			*builtins[NUM_BULTINS];
 	t_builtin_ptr	f_ptrs[NUM_BULTINS];
