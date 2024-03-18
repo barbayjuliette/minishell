@@ -12,20 +12,21 @@
 
 #include "../../includes/minishell.h"
 
+#include "../../includes/minishell.h"
+
 int	ft_env(char **args, t_data *data)
 {
 	int		i;
 	char	*env_value;
 
 	i = 0;
-	(void)args;
 	if (args[1])
 	{
 		write(STDERR_FILENO, "minishell: env: too many args\n", 31);
 		data->exit_code = 1;
 		return (0);
 	}
-	env_value = ft_getenv("PATH", data);
+	env_value = ft_getenv_for_env("PATH", data);
 	if (!env_value)
 	{
 		ft_putendl_fd("env: No such file or directory", STDOUT_FILENO);
@@ -34,8 +35,14 @@ int	ft_env(char **args, t_data *data)
 	}
 	while (data->envp[i])
 	{
+		if (check_name(data->envp[i], 1) == 5)
+		{
+			i ++;
+			continue ;
+		}
 		ft_putendl_fd(data->envp[i], STDOUT_FILENO);
 		i++;
 	}
+	free(env_value);
 	return (0);
 }

@@ -12,50 +12,67 @@
 
 #include "../../includes/minishell.h"
 
-void	add_path_to_env(t_data *data)
+void	update_env(t_data *data)
 {
 	int		i;
-	char	*tmp;
-	char	pwd[PATH_MAX];
-	char	*str;
+	int		k;
+	char	*path;
+	char	*new;
 
 	i = 0;
-	str = getcwd(pwd, PATH_MAX);
+	path = getcwd(NULL, 0);
+	if (!path)
+		return ;
+	new = ft_strjoin("PWD=", path);
+	free(path);
+	k = find_name(new, data);
 	while (data->envp[i])
 	{
-		if (!ft_strncmp(data->envp[i], "PWD=", 4))
+		if (i == k)
 		{
-			tmp = ft_strjoin("PWD=", str);
-			data->envp[i] = tmp;
-			free(tmp);
+			if (data->ptr_allocated_by_program)
+				free(data->envp[data->ptr_allocated_by_program]);
+			data->envp[i] = new;
 		}
 		i++;
 	}
+	data->ptr_allocated_by_program = k;
+}
+int ft_empty_cd(t_data *data)
+{
+	int		res;
+	char	*home_path;
+
+	home_path = getenv("HOME");
+	if (home_path == NULL)
+	{
+		ft_putstr_fd("HOME environment variable not set\n", 2);
+		return (1);
+	}
+	res = chdir(home_path);
+	update_env(data);
+	return (res);
 }
 
 int	ft_cd(char **args, t_data *data)
 {
 	int		res;
-	char	*home_path;
-
-	if (!args[1] || ft_strcmp(args[1], "~") == 0)
+	if (!args[1])
+		return(ft_empty_cd(data));
+	if (args[2])
 	{
-		home_path = getenv("HOME");
-		if (home_path == NULL)
-		{
-			ft_putstr_fd("HOME environment variable not set\n", STDERR_FILENO);
-			return (1);
-		}
-		res = chdir(home_path);
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		data->exit_code = 1;
+		return (1);
 	}
 	else
 		res = chdir(args[1]);
 	if (res != 0)
 	{
-		ft_putstr_fd(args[1], STDERR_FILENO);
-		perror(": ");
+		data->exit_code = 1;
+		perror(args[1]);
 		return (1);
 	}
-	add_path_to_env(data);
+	update_env(data);
 	return (0);
 }

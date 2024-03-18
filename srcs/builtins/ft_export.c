@@ -12,39 +12,10 @@
 
 #include "../../includes/minishell.h"
 
-int	change_value(char *name, t_data *data, char *full)
-{
-	int	i;
-	char *env_name;
-
-	i = 0;
-	while (data->envp[i])
-	{
-		env_name = get_name(data->envp[i]);
-		if (ft_compare1(name, env_name) == 0)
-		{			
-			data->envp[i] = ft_strdup(full);
-			free(env_name);
-			break ;
-		}
-		else
-			i++;
-		free(env_name);
-	}
-	return (0);
-}
-
-int	add_new_var(char *name, t_data *data, char *full)
-{
-	add_new_name(name, data);
-	change_value(name, data, full);
-	return (0);
-}
-
 char	*ft_getenv(char *name, t_data *data)
 {
-	int	i;
-	char *env_name;
+	int		i;
+	char	*env_name;
 
 	i = 0;
 	while (data->envp[i])
@@ -62,10 +33,31 @@ char	*ft_getenv(char *name, t_data *data)
 	return (ft_strdup(""));
 }
 
-int	check_if_exist(char *name, t_data *data)
+char	*ft_getenv_for_env(char *name, t_data *data)
 {
-	int	i;
-	char *env_name;
+	int		i;
+	char	*env_name;
+
+	i = 0;
+	while (data->envp[i])
+	{
+		env_name = get_name(data->envp[i]);
+		if (ft_compare1(name, env_name) == 0)
+		{
+			free(env_name);
+			return (get_value(data->envp[i]));
+		}
+		else
+			i++;
+		free(env_name);
+	}
+	return (0);
+}
+
+/*int	check_if_exist(char *name, t_data *data)
+{
+	int		i;
+	char	*env_name;
 
 	i = 0;
 	while (data->envp[i])
@@ -81,37 +73,75 @@ int	check_if_exist(char *name, t_data *data)
 		free(env_name);
 	}
 	return (0);
+}*/
+
+int	check_name_02(char *name, char flag, int i)
+{
+	while (name[i] && name[i] != '=' && name[i] != '+')
+	{
+		if (!ft_isalpha(name[i]) && !ft_isdigit(name[i]) && name[i] != '_')
+			return (0);
+		i++;
+	}
+	if (flag == 3 && name[i] == '+')
+	{
+		i++;
+		if (name[i] != '=')
+			return (0);
+		return (10);
+	}
+	if (name[i] != '=')
+		return (5);
+	return (1);
 }
 
-int	ft_export(char **args, t_data *data)
+int	check_name(char *name, char flag)
 {
-	int		len_name;
-	int		exist;
-	char	*equal_sign_pos;
-	char	*name;
+	int	i;
 
-	if (!args[1])
-		return (print_env(data));
-	equal_sign_pos = ft_strchr(args[1], '=');
-	if (!equal_sign_pos)
-		len_name = ft_strlen(args[1]);
-	else
-		len_name = equal_sign_pos - args[1];
-	name = (char *)malloc(len_name + 1);
-	ft_strlcpy(name, args[1], len_name);
-	exist = check_if_exist(name, data);
-	if (var_is_valid(name) == -1)
+	i = 1;
+	if (!ft_isalpha(name[0]) && name[0] != '_')
 	{
-		free(name);
-		return (1);
-	}
-	if (!exist)
-	{
-		add_new_var(name, data, args[1]);
+		ft_putstr_fd("export: ", STDERR_FILENO);
+		ft_putstr_fd(name, STDERR_FILENO);
+		ft_putstr_fd(" not a valid identifier\n", STDERR_FILENO);
 		return (0);
 	}
-	if (equal_sign_pos)
-		change_value(name, data, args[1]);
-	free(name);
+	if (flag)
+		return (check_name_02(name, flag, i));
+	else
+	{
+		while (name[i])
+		{
+			if (!ft_isalpha(name[i]) && !ft_isdigit(name[i]) && name[i] != '_')
+				return (0);
+			i++;
+		}
+	}
+	return (1);
+}
+
+int	ft_export(char **argv, t_data *data)
+{
+	int	i;
+	int	flag;
+
+	i = 1;
+	if (!argv[i])
+		return (print_env(data));
+	while (argv[i])
+	{
+		flag = check_name(argv[i], 3);
+		if (flag)
+		{
+			add_var_evp(argv[i], flag, data);
+		}
+		else
+		{
+			data->exit_code = 1;
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }

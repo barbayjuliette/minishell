@@ -14,26 +14,28 @@
 
 int	get_fd_out(t_cmd_table *table)
 {
-	int	outfile;
+	int		outfile;
+	t_token	*lst;
 
-	if (!table->output || !table->output->value)
+	lst = table->output;
+	if (!lst || !lst->value)
 		outfile = STDOUT_FILENO;
 	else
 	{
-		while (table->output)
+		while (lst)
 		{
-			if (table->output->type == 6)
-				outfile = open(table->output->value, O_WRONLY | O_CREAT | \
+			if (lst->type == 6)
+				outfile = open(lst->value, O_WRONLY | O_CREAT | \
 					O_APPEND, 0777);
 			else if (table->output->type == 5)
-				outfile = open(table->output->value, O_CREAT | O_RDWR | \
+				outfile = open(lst->value, O_CREAT | O_RDWR | \
 					O_TRUNC, 0777);
 			if (outfile == -1)
 			{
-				perror(table->output->value);
+				perror(lst->value);
 				return (-1);
 			}
-			table->output = table->output->next;
+			lst = lst->next;
 		}
 	}
 	return (outfile);
@@ -41,26 +43,33 @@ int	get_fd_out(t_cmd_table *table)
 
 int	get_fd_in(t_cmd_table *table, t_data *data)
 {
-	int	infile;
+	int		infile;
+	t_token	*lst;
 
-	if (!table->input || !table->input->value)
+	lst = table->input;
+
+	if (!lst || !lst->value)
 		infile = STDIN_FILENO;
 	else
 	{
-		while (table->input)
+		//infile = 0;
+		while (lst)
 		{
-			if (table->input->type == 4)
+			//printf("data->fd_hdc: %d\n", data->fd_hdc);
+			if (lst->type == 4)
 				infile = data->fd_hdc;
 			else
-				infile = open(table->input->value, O_RDONLY);
+				infile = open(lst->value, O_RDONLY);
+			//printf(": %d\n", infile);
 			if (infile == -1)
 			{
-				perror(table->input->value);
+				perror(lst->value);
 				return (-1);
 			}
-			table->input = table->input->next;
+			lst = lst->next;
 		}
 	}
+	//printf(": %d\n", infile);
 	return (infile);
 }
 

@@ -45,23 +45,20 @@ void	ft_execve(char **cmd, t_data *data)
 {
 	char	*path;
 	char	*env_value;
-	int i;
 
-	env_value = ft_getenv("PATH", data);
+
+	env_value = ft_getenv_for_env("PATH", data);
 	if (!env_value)
 	{
 		path = cmd[0];
 		data->exit_code = 1;
-		ft_putendl_fd("env: No such file or directory", STDOUT_FILENO);
+		//ft_putendl_fd("env: No such file or directory", STDOUT_FILENO);
 	}
 	else
 		path = find_path(cmd[0], data->envp);
 	free(env_value);
-	i = -1;
 	if (!path)
 	{
-		while (cmd[++i])
-			free(cmd[i]);
 		free(cmd);
 		ft_putstr_fd(cmd[0], 2);
 		data->exit_code = 1;
@@ -71,8 +68,15 @@ void	ft_execve(char **cmd, t_data *data)
 	signal(SIGINT, SIG_IGN); // CTRL+C
 	if (execve(path, cmd, data->envp) == -1)
 	{
-		ft_putstr_fd(cmd[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		perror(cmd[0]);
+		//free(cmd);
+		if (path != cmd[0])
+			free(path);
+		//free(data->tbl);
+		//free(data->tokens);
+		free(data->pipefds);
+		free_tokens(&data->tokens, 1);
+		free_commands(&data->tbl);
 		exit(127);
 	}
 }
