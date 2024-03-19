@@ -49,6 +49,8 @@ int	init(t_data *data, char **envp, int argc, char **argv)
 	data->ft_cd_flag = 0;
 	data->ft_export_flag = 0;
 	data->tmp_names = NULL;
+	data->fd_hdc = -1;
+	data->hd_flag = 0;
 	_ft_init_builtins(data);
 	data->original_stdin = dup(STDIN_FILENO);
 	data->original_stdout = dup(STDOUT_FILENO);
