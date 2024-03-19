@@ -74,8 +74,6 @@ void	ft_execve(char **cmd, t_data *data)
 		data->exit_code = 1;
 		ft_putendl_fd(": command not found", 2);
 	}
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_IGN);
 	if (execve(path, cmd, data->envp) == -1)
 		handle_error(cmd, path, data);
 }
@@ -83,6 +81,7 @@ void	ft_execve(char **cmd, t_data *data)
 int	process(int *pipefds, t_cmd_table *table, t_data *data)
 {
 	setup_pipes(pipefds, data);
+	setup_signals();
 	return (execute_commands(pipefds, table, data, 0));
 }
 
