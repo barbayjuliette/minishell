@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:27:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 12:05:35 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/19 11:07:58 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,47 +101,4 @@ void	free_commands(t_cmd_table **table)
 		current = next;
 	}
 	*table = NULL;
-}
-
-// Functions that will be deleted later, only for testing
-
-void	print_tokens(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token)
-	{
-		printf("Item %d:, type: %d, value: %s\n", i, token->type, token->value);
-		i++;
-		token = token->next;
-	}
-}
-
-void	print_all_commands(t_cmd_table *table)
-{
-	while (table)
-	{
-		print_command_table(table);
-		table = table->next;
-		printf("\n");
-	}
-}
-
-void	print_command_table(t_cmd_table *table)
-{
-	int	i;
-
-	i = 0;
-	printf("Commands: ");
-	while (table->cmds[i])
-	{
-		printf("[%i]: %s ", i, table->cmds[i]);
-		i++;
-	}
-	printf("\n");
-	printf("INPUT:\n");
-	print_tokens(table->input);
-	printf("OUTPUT:\n");
-	print_tokens(table->output);
 }

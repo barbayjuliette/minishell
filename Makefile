@@ -27,7 +27,7 @@ MAIN = srcs/main/prompt.c \
 		srcs/builtins/utils2.c \
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 NAME = minishell
 OBJS = ${MAIN:.c=.o}

@@ -80,12 +80,7 @@ int	check_name(char *name, char flag)
 
 	i = 1;
 	if (!ft_isalpha(name[0]) && name[0] != '_')
-	{
-		ft_putstr_fd("export: ", STDERR_FILENO);
-		ft_putstr_fd(name, STDERR_FILENO);
-		ft_putstr_fd(" not a valid identifier\n", STDERR_FILENO);
 		return (0);
-	}
 	if (flag)
 		return (check_name_02(name, flag, i));
 	else
@@ -117,6 +112,9 @@ int	ft_export(char **argv, t_data *data)
 		}
 		else
 		{
+			ft_putstr_fd("export: ", STDERR_FILENO);
+			ft_putstr_fd(argv[i], STDERR_FILENO);
+			ft_putstr_fd(" not a valid identifier\n", STDERR_FILENO);
 			data->exit_code = 1;
 			return (1);
 		}

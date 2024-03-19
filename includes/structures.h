@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:52:04 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/13 10:47:29 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/19 11:06:13 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@
 typedef struct s_data	t_data;
 
 typedef int				(*t_builtin_ptr)(char **,t_data *);
-
-typedef struct s_fd
-{
-	int		pfd[2];
-	int		fds[2];
-}	t_fd;
 
 typedef struct s_token
 {
@@ -42,7 +36,6 @@ typedef struct s_cmd_table
 
 }	t_cmd_table;
 
-
 struct s_data
 {
 	int				exit_flag;
@@ -54,21 +47,19 @@ struct s_data
 	int				original_stdout;
 	int				last_command_flag;
 	int				fd_hdc;
-	int ptr_allocated_by_program;
-	int blocking_flag;
-	int ft_cd_flag;
-	int ft_export_flag;
+	int				ptr_allocated_by_program;
+	int				blocking_flag;
+	int				ft_cd_flag;
+	int				ft_export_flag;
 	char			*delim;
 	char			**envp;
 	char			*tmp_name;
-	t_cmd_table     *tbl;
+	t_cmd_table		*tbl;
 	t_token			*tokens;
-	t_token		*tmp_names;
-	int		*pipefds;
+	t_token			*tmp_names;
+	int				*pipefds;
 	char			*builtins[NUM_BULTINS];
 	t_builtin_ptr	f_ptrs[NUM_BULTINS];
 };
-
-
 
 #endif

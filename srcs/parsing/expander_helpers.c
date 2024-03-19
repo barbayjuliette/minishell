@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:41:46 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/12 15:51:58 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/19 11:13:29 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,32 @@ char	*get_value_variable(char *str, int i, int len, t_data *data)
 		value = "";
 	free(var);
 	return (value);
+}
+
+void	remove_empty_tokens(t_token **token)
+{
+	t_token	*current;
+	t_token	*next;
+
+	current = *token;
+	if (current && ft_strlen(current->value) == 0)
+	{
+		*token = (*token)->next;
+		free(current->value);
+		current->value = NULL;
+		free(current);
+	}
+	current = *token;
+	while (current)
+	{
+		next = current->next;
+		if (next && ft_strlen(next->value) == 0)
+		{
+			free(next->value);
+			next->value = NULL;
+			current->next = next->next;
+			free(next);
+		}
+		current = current->next;
+	}
 }
