@@ -12,6 +12,26 @@
 
 #include "../../includes/minishell.h"
 
+void	handler_in_executor(int sig)
+{
+	if (sig == SIGINT)
+	{
+		(void)sig;
+		write(2, "\n", 1);
+	}
+	else if (sig == SIGQUIT)
+	{
+		(void)sig;
+		write(2, "Quit (core dumped)\n", 19);
+	}
+}
+
+void	setup_signals(void)
+{
+	signal(SIGQUIT, handler_in_executor);
+	signal(SIGINT, handler_in_executor);
+}
+
 int	create_hiden_file(t_data *data)
 {
 	char	*file_name;
