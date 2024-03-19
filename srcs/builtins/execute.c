@@ -54,44 +54,6 @@ int	execute_process(int *pipefds, t_cmd_table *table, t_data *data, int j)
 	return (0);
 }
 
-/*int	process(int *pipefds, t_cmd_table *table, t_data *data)
-{
-	int		i;
-	int		j;
-	pid_t	pid;
-
-	i = 0;
-	while (i < (data->number_of_commands))
-	{
-		if (pipe(pipefds + i * 2) < 0)
-			exit(EXIT_FAILURE);
-		i++;
-	}
-	j = 0;
-	while (table)
-	{
-		data->exit_code = 0;
-		while (get_fd(table, data) == 1)
-		{
-			if (table->next)
-				table = table->next;
-			else
-			{
-				data->exit_code = 1;
-				return (1);
-			}
-			data->blocking_flag = 1;
-		}
-		pid = fork();
-		if (pid == 0)
-			execute_process(pipefds, table, data, j);
-		else if (pid < 0)
-			exit(EXIT_FAILURE);
-		table = table->next;
-		j += 2;
-	}
-	return (0);
-}*/
 void	setup_pipes(int *pipefds, t_data *data)
 {
 	int	i;
@@ -131,40 +93,6 @@ int	execute_commands(int *pipefds, t_cmd_table *table, t_data *data, int j)
 		table = table->next;
 		j += 2;
 	}
-	return (0);
-}
-
-int	process(int *pipefds, t_cmd_table *table, t_data *data)
-{
-	setup_pipes(pipefds, data);
-	return execute_commands(pipefds, table, data, 0);
-}
-
-int	create_process(t_cmd_table *table, t_data *data)
-{
-	int		*pipefds;
-	int		status;
-	int		i;
-
-	status = 0;
-	pipefds = malloc(sizeof(int) * (2 * data->number_of_commands));
-	data->pipefds = pipefds;
-	process(pipefds, table, data);
-	i = 0;
-	while (i < 2 * data->number_of_commands)
-	{
-		close(pipefds[i]);
-		i++;
-	}
-	i = 0;
-	while (i < data->number_of_commands + 1)
-	{
-		wait(&status);
-		if (WIFEXITED(status) && data->exit_code != 1)
-			data->exit_code = WEXITSTATUS(status);
-		i++;
-	}
-	free(pipefds);
 	return (0);
 }
 

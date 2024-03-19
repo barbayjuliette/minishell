@@ -32,7 +32,7 @@ int	add_new_name(char *name, int length, t_data *data)
 void	add_new_name_02(char *name, char **tmp_env, int i, t_data *data)
 {
 	char	flag;
-	int j;
+	int		j;
 
 	j = 0;
 	flag = 1;

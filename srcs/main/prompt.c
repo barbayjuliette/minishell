@@ -6,11 +6,12 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:32:31 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/13 11:02:08 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/19 11:29:26 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
+// valgrind --suppressions=readline.supp --leak-check=full 
+// --show-leak-kinds=all ./minishell
 
 #include "../../includes/minishell.h"
 
@@ -26,13 +27,27 @@ void	handle_sigint(int signal)
 	}
 }
 
-void	configure_signals(void)
+char	*configure_signals(void)
 {
-	signal(SIGINT, handle_sigint); // CTRL+C
-	signal(SIGQUIT, SIG_IGN); // CTRL+\.
+	char		*line;
+
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+	line = readline("minishell$ ");
+	return (line);
 }
 
-int main(int argc, char **argv, char **envp)
+void	execute_and_clean_up(t_data *data, t_token *tokens, t_cmd_table *table)
+{
+	data->tokens = tokens;
+	execute(table, data);
+	free_tokens(&tokens, 1);
+	free_commands(&table);
+	dup2(data->original_stdin, STDIN_FILENO);
+	dup2(data->original_stdout, STDOUT_FILENO);
+}	
+
+int	main(int argc, char **argv, char **envp)
 {
 	t_data		data;
 	char		*line;
@@ -42,28 +57,20 @@ int main(int argc, char **argv, char **envp)
 	init(&data, envp, argc, argv);
 	while (data.exit_flag)
 	{
-		configure_signals();
-		line = readline("minishell$ ");
-		if (!line) // To handle CTRL + D
+		line = configure_signals();
+		if (!line)
 			break ;
 		if (line && *line)
 			add_history(line);
 		tokens = get_tokens(line);
-		free(line);
 		if (!tokens)
 			continue ;
 		expand_all(tokens, &data);
 		remove_empty_tokens(&tokens);
 		table = parsing(tokens);
-		data.tokens = tokens;
 		if (!table)
 			continue ;
-		execute(table, &data);
-		// print_all_commands(table);
-		free_tokens(&tokens, 1);
-		free_commands(&table);
-		dup2(data.original_stdin, STDIN_FILENO);
-    	dup2(data.original_stdout, STDOUT_FILENO);
+		execute_and_clean_up(&data, tokens, table);
 	}
 	clean_before_exit(&data);
 	return (data.exit_code);

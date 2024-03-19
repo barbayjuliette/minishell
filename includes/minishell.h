@@ -32,7 +32,7 @@
 # define WSPACE " \n\t\f\v\r"
 
 // Signals
-void	configure_signals(void);
+char	*configure_signals(void);
 void	handle_sigint(int signal);
 int		setup_terminal(bool echo_ctl);
 

@@ -73,12 +73,14 @@ int	setup_terminal(bool echo_ctl)
 	return (0);
 }
 
-void clean_before_exit(t_data *data)
+void	clean_before_exit(t_data *data)
 {
 	rl_clear_history();
 	free_tokens(&data->tmp_names, 1);
-	if (data->envp != NULL && data->ptr_allocated_by_program != -1 && data->ft_cd_flag)
-        free(data->envp[data->ptr_allocated_by_program]);
-	if (data->envp != NULL && data->ptr_allocated_by_program != -1 && data->ft_export_flag)
-        free(data->envp);
+	if (data->envp != NULL && data->ptr_allocated_by_program != -1 \
+	&& data->ft_cd_flag)
+		free(data->envp[data->ptr_allocated_by_program]);
+	if (data->envp != NULL && data->ptr_allocated_by_program != -1 \
+	&& data->ft_export_flag)
+		free(data->envp);
 }

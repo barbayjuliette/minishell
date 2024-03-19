@@ -6,7 +6,7 @@
 /*   By: jbarbay <jbarbay@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 12:59:45 by jbarbay           #+#    #+#             */
-/*   Updated: 2024/03/11 12:04:06 by jbarbay          ###   ########.fr       */
+/*   Updated: 2024/03/19 11:13:06 by jbarbay          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,6 @@ int	get_cmds(t_token *token, t_cmd_table **table)
 	return (1);
 }
 
-// I cannot start or finish the prompt with a pipe.
-// I create a new pipeline then add it to the back of the linked list
-// I add the redirections then the commands to the pipeline
-// Then I update the token to get to the end of the pipeline and process the next one if there is one.
-
 t_cmd_table	*parsing(t_token *token)
 {
 	t_cmd_table	*new;
@@ -131,6 +126,5 @@ t_cmd_table	*parsing(t_token *token)
 			return (error_parsing(2, &list, &first_token));
 		token = update_token(token);
 	}
-	// print_all_commands(list);
 	return (list);
 }

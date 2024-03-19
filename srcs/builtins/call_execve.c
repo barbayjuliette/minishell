@@ -79,3 +79,37 @@ void	ft_execve(char **cmd, t_data *data)
 	if (execve(path, cmd, data->envp) == -1)
 		handle_error(cmd, path, data);
 }
+
+int	process(int *pipefds, t_cmd_table *table, t_data *data)
+{
+	setup_pipes(pipefds, data);
+	return (execute_commands(pipefds, table, data, 0));
+}
+
+int	create_process(t_cmd_table *table, t_data *data)
+{
+	int		*pipefds;
+	int		status;
+	int		i;
+
+	status = 0;
+	pipefds = malloc(sizeof(int) * (2 * data->number_of_commands));
+	data->pipefds = pipefds;
+	process(pipefds, table, data);
+	i = 0;
+	while (i < 2 * data->number_of_commands)
+	{
+		close(pipefds[i]);
+		i++;
+	}
+	i = 0;
+	while (i < data->number_of_commands + 1)
+	{
+		wait(&status);
+		if (WIFEXITED(status) && data->exit_code != 1)
+			data->exit_code = WEXITSTATUS(status);
+		i++;
+	}
+	free(pipefds);
+	return (0);
+}

@@ -79,9 +79,11 @@ t_token	*get_tokens(char *line)
 {
 	t_token	*list;
 	int		error;
+	char	*full_line;
 
 	list = NULL;
 	error = 0;
+	full_line = line;
 	while (*line && !error)
 	{
 		if (ft_strchr(WSPACE, *line))
@@ -97,5 +99,6 @@ t_token	*get_tokens(char *line)
 	}
 	if (error)
 		return (NULL);
+	free(full_line);
 	return (list);
 }
