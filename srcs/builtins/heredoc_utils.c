@@ -32,11 +32,37 @@ void	setup_signals(void)
 	signal(SIGINT, handler_in_executor);
 }
 
-int	create_hiden_file(t_data *data)
+int	create_file(int num, char **file_n, t_data *data)
 {
-	char	*file_name;
+	char	*name;
 
-	file_name = "tmp.txt";
-	data->fd_hdc = open(file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	name = create_name(num);
+	if (!name)
+		return (-1);
+	*file_n = name;
+	data->fd_hdc = open(name, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (data->fd_hdc == -1)
+		free(name);
 	return (data->fd_hdc);
+}
+
+char	*create_name(int num)
+{
+	char	*numbr;
+	char	*name;
+
+	numbr = ft_itoa(num);
+	if (!numbr)
+		return ((void *)0);
+	name = ft_strjoin("tmp", numbr);
+	name = ft_strjoin(name, ".txt");
+	free(numbr);
+	return (name);
+}
+
+void	handler_in_heredoc(int sig)
+{
+	(void)sig;
+	write(2, "\n", 1);
+	exit(130);
 }

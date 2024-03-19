@@ -32,48 +32,66 @@ void	child(t_data *data)
 	exit(0);
 }
 
-int	parent(t_data *data)
-{
-	int	res;
-
-	waitpid(-1, &res, 0);
-	data->fd_hdc = open("tmp.txt", O_RDWR);
-	return (0);
-}
-
-int	ft_heredoc(t_data *data)
+int	ft_heredoc(t_data *data, int num)
 {
 	int	pid;
+	int	res;
+	char	*file_n;
 
-	data->fd_hdc = create_hiden_file(data);
-	if (data->fd_hdc == START_RD_LN)
-		return (START_RD_LN);
+	data->fd_hdc = create_file(num, &file_n, data);
+	data->in_file = file_n;
 	pid = fork();
 	if (pid == -1)
 		return (START_RD_LN);
 	if (pid == 0)
+	{
+		signal(SIGINT, handler_in_heredoc);
+		signal(SIGQUIT, SIG_IGN);
 		child(data);
+	}
 	else
 	{
-		if (parent(data) == START_RD_LN)
-			return (START_RD_LN);
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(-1, &res, 0);
 	}
-	return (data->fd_hdc);
+	return (0);
 }
 
-int	run_heredoc(t_cmd_table *table, t_data *data)
+int	create_heredoc(t_cmd_table *table, int num, t_data *data)
 {
+	//char	*file_n;
+	//data->fd_hdc = create_file(num, &file_n, data);
 	t_token	*lst;
-
 	lst = table->input;
 	while (lst)
 	{
 		if (lst->type == 4)
 		{
 			data->delim = lst->value;
-			ft_heredoc(data);
+			ft_heredoc(data, num);
+			//data->fd_hdc = open(file_n, O_RDWR);
+			//data->in_file = file_n;
 		}
 		lst = lst->next;
+	}
+	//close(data->fd_hdc);
+	return (0);
+}
+
+int	run_heredoc(t_cmd_table *table, t_data *data)
+{
+	t_cmd_table	*tmp_cmd;
+	int num;
+
+	tmp_cmd = table;
+	num = 1;
+	while (tmp_cmd)
+	{
+		if (create_heredoc(tmp_cmd, num, data))
+			return (1);
+		tmp_cmd = tmp_cmd->next;
+		num++;
 	}
 	return (0);
 }
