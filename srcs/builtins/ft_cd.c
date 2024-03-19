@@ -33,12 +33,14 @@ void	update_env(t_data *data)
 			if (data->ptr_allocated_by_program)
 				free(data->envp[data->ptr_allocated_by_program]);
 			data->envp[i] = new;
+			data->ft_cd_flag = 1;
 		}
 		i++;
 	}
 	data->ptr_allocated_by_program = k;
 }
-int ft_empty_cd(t_data *data)
+
+int	ft_empty_cd(t_data *data)
 {
 	int		res;
 	char	*home_path;
@@ -56,9 +58,10 @@ int ft_empty_cd(t_data *data)
 
 int	ft_cd(char **args, t_data *data)
 {
-	int		res;
+	int	res;
+
 	if (!args[1])
-		return(ft_empty_cd(data));
+		return (ft_empty_cd(data));
 	if (args[2])
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);

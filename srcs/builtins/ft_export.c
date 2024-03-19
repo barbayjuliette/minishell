@@ -54,27 +54,6 @@ char	*ft_getenv_for_env(char *name, t_data *data)
 	return (0);
 }
 
-/*int	check_if_exist(char *name, t_data *data)
-{
-	int		i;
-	char	*env_name;
-
-	i = 0;
-	while (data->envp[i])
-	{
-		env_name = get_name(data->envp[i]);
-		if (ft_compare1(name, env_name) == 0)
-		{
-			free(env_name);
-			return (1);
-		}
-		else
-			i++;
-		free(env_name);
-	}
-	return (0);
-}*/
-
 int	check_name_02(char *name, char flag, int i)
 {
 	while (name[i] && name[i] != '=' && name[i] != '+')

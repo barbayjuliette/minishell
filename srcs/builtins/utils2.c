@@ -107,3 +107,13 @@ int	ft_compare1(const char *str1, const char *str2)
 	}
 	return (*str1 - *str2);
 }
+
+void	handle_error_blocking(char **cmd, t_data *data)
+{
+	if (!ft_compare1(cmd[0], "wc"))
+		ft_putendl_fd("	      0       0       0", 2);
+	free(data->pipefds);
+	free_tokens(&data->tokens, 1);
+	free_commands(&data->tbl);
+	exit(0);
+}

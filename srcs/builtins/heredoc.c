@@ -18,9 +18,8 @@ void	child(t_data *data)
 
 	while (1)
 	{
-
-		signal(SIGQUIT, SIG_IGN); // CTRL+\.
-		signal(SIGINT, SIG_DFL); // CTRL+C
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_DFL);
 		str = readline("> ");
 		if (ft_strcmp(str, data->delim) == 0)
 			break ;
@@ -28,10 +27,6 @@ void	child(t_data *data)
 		ft_putstr_fd("\n", data->fd_hdc);
 		free(str);
 	}
-	
-	//free(data->tokens);
-	//free(data->tbl);
-	//free(data->pipefds);
 	free_tokens(&data->tokens, 1);
 	free_commands(&data->tbl);
 	exit(0);
@@ -51,7 +46,6 @@ int	ft_heredoc(t_data *data)
 	int	pid;
 
 	data->fd_hdc = create_hiden_file(data);
-	//printf("data->fd_hdc: %d\n", data->fd_hdc);
 	if (data->fd_hdc == START_RD_LN)
 		return (START_RD_LN);
 	pid = fork();
@@ -69,14 +63,9 @@ int	ft_heredoc(t_data *data)
 
 int	run_heredoc(t_cmd_table *table, t_data *data)
 {
-	//t_cmd_table	*tmp;
-
-	//tmp = table;
-	//tmp = copylinkedlist(table);
 	t_token	*lst;
 
 	lst = table->input;
-
 	while (lst)
 	{
 		if (lst->type == 4)
@@ -86,6 +75,5 @@ int	run_heredoc(t_cmd_table *table, t_data *data)
 		}
 		lst = lst->next;
 	}
-	//free(lst);
 	return (0);
 }

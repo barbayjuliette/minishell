@@ -22,17 +22,19 @@ int	add_new_name(char *name, int length, t_data *data)
 		free(name);
 		return (1);
 	}
-	add_new_name_02(name, tmp_env, 0, 0, data );
+	add_new_name_02(name, tmp_env, 0, data);
 	if (data->ptr_allocated_by_program != -1)
 		free(data->envp);
 	data->envp = tmp_env;
 	return (0);
 }
 
-void	add_new_name_02(char *name, char **tmp_env, int i, int j, t_data *data)
+void	add_new_name_02(char *name, char **tmp_env, int i, t_data *data)
 {
 	char	flag;
+	int j;
 
+	j = 0;
 	flag = 1;
 	while (data->envp[i])
 	{
@@ -50,10 +52,7 @@ void	add_new_name_02(char *name, char **tmp_env, int i, int j, t_data *data)
 		}
 	}
 	if (flag)
-	{
-		tmp_env[j] = name;
-		j++;
-	}
+		tmp_env[j++] = name;
 	tmp_env[j] = NULL;
 }
 
@@ -64,13 +63,8 @@ void	change_name(char *name, char *tmp_name, int i, t_data *data)
 	length = 0;
 	while (name[length] != '=' && name[length])
 		length++;
-	if (!name[length])
-		free(tmp_name);
-	else
-	{
-		free(data->envp[i]);
+	if (name[length])
 		data->envp[i] = tmp_name;
-	}
 }
 
 int	find_name(char *name, t_data *data)
@@ -91,4 +85,17 @@ int	find_name(char *name, t_data *data)
 		i++;
 	}
 	return (i);
+}
+
+int	find_value(int i, t_data *data)
+{
+	int	j;
+
+	j = 0;
+	while (data->envp[i][j] != '=' && data->envp[i][j])
+		j++;
+	if (data->envp[i][j] == '=')
+		return (++j);
+	else
+		return (j);
 }

@@ -12,12 +12,24 @@
 
 #include "../../includes/minishell.h"
 
-#include "../../includes/minishell.h"
+int	check_for_path(t_data *data)
+{
+	char	*env_value;
+
+	env_value = ft_getenv_for_env("PATH", data);
+	if (!env_value)
+	{
+		ft_putendl_fd("env: command not found", STDOUT_FILENO);
+		data->exit_code = 127;
+		return (127);
+	}
+	free(env_value);
+	return (0);
+}
 
 int	ft_env(char **args, t_data *data)
 {
 	int		i;
-	char	*env_value;
 
 	i = 0;
 	if (args[1])
@@ -26,13 +38,8 @@ int	ft_env(char **args, t_data *data)
 		data->exit_code = 1;
 		return (0);
 	}
-	env_value = ft_getenv_for_env("PATH", data);
-	if (!env_value)
-	{
-		ft_putendl_fd("env: No such file or directory", STDOUT_FILENO);
-		data->exit_code = 127;
+	if (check_for_path(data))
 		return (127);
-	}
 	while (data->envp[i])
 	{
 		if (check_name(data->envp[i], 1) == 5)
@@ -43,6 +50,5 @@ int	ft_env(char **args, t_data *data)
 		ft_putendl_fd(data->envp[i], STDOUT_FILENO);
 		i++;
 	}
-	free(env_value);
 	return (0);
 }
