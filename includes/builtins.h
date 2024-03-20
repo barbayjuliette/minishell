@@ -61,9 +61,9 @@ int			create_process(t_cmd_table *table, t_data *data);
 void		setup_pipes(int *pipefds, t_data *data);
 void		setup_signals(void);
 void		handler_in_executor(int sig);
-int	create_file(int num, char **file_n, t_data *data);
-char	*create_name(int num, t_data *data);
-void	handler_in_heredoc(int sig);
+int			create_file(int num, char **file_n, t_data *data);
+char		*create_name(int num, t_data *data);
+void		handler_in_heredoc(int sig);
 int			execute_commands(int *pipefds, t_cmd_table *table, \
 			t_data *data, int j);
 #endif
