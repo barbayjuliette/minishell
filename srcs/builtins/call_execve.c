@@ -57,7 +57,7 @@ void	ft_execve(char **cmd, t_data *data)
 {
 	char	*path;
 	char	*env_value;
-
+	
 	env_value = ft_getenv_for_env("PATH", data);
 	if (!env_value)
 	{

@@ -106,8 +106,7 @@ int	execute(t_cmd_table *original_table, t_data *data)
 	data->outfile = STDOUT_FILENO;
 	data->infile = STDIN_FILENO;
 	get_number_of_commands(table, data);
-	if (table->input)
-		run_heredoc(table, data);
+	run_heredoc(table, data);
 	i = check_if_builtins(table->cmds[0], data);
 	if (data->number_of_commands == 1 && i < 7)
 	{

@@ -35,38 +35,6 @@ char	*ft_strdup2(const char *s1)
 	return (tmp);
 }
 
-/*int	add_new_name(char *name, t_data *data)
-{
-	char	**tmp_env;
-	int		k;
-	int		i;
-
-	k = 0;
-	while (data->envp[k] != NULL)
-		k++;
-	tmp_env = ft_calloc(k + 2, sizeof(char *));
-	if (!tmp_env)
-	{
-		free(name);
-		return (1);
-	}
-	i = 0;
-	while (data->envp[i])
-	{
-		tmp_env[i] = ft_strdup(data->envp[i]);
-		i++;
-	}
-	tmp_env[i] = ft_strdup2(name);
-	tmp_env[i + 1] = NULL;
-	free(data->envp);
-	data->envp = tmp_env;
-	i = -1;
-	while (tmp_env[++i])
-		free(tmp_env[i]);
-	free(tmp_env);
-	return (0);
-}*/
-
 char	*get_name(char *s)
 {
 	int		len_name;

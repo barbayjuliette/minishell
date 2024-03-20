@@ -54,9 +54,11 @@ struct s_data
 	char			*delim;
 	char			**envp;
 	char			*tmp_name;
+	char *in_file;
 	t_cmd_table		*tbl;
 	t_token			*tokens;
 	t_token			*tmp_names;
+	t_token *hd_names;
 	int				*pipefds;
 	char			*builtins[NUM_BULTINS];
 	t_builtin_ptr	f_ptrs[NUM_BULTINS];
