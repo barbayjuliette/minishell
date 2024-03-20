@@ -43,14 +43,15 @@ int	init(t_data *data, char **envp, int argc, char **argv)
 	data->outfile = STDOUT_FILENO;
 	data->infile = STDIN_FILENO;
 	data->delim = NULL;
+	data->in_file = NULL;
 	data->ptr_allocated_by_program = -1;
 	data->blocking_flag = 0;
 	data->tmp_name = NULL;
 	data->ft_cd_flag = 0;
 	data->ft_export_flag = 0;
 	data->tmp_names = NULL;
+	data->hd_names = NULL;
 	data->fd_hdc = -1;
-	data->hd_flag = 0;
 	_ft_init_builtins(data);
 	data->original_stdin = dup(STDIN_FILENO);
 	data->original_stdout = dup(STDOUT_FILENO);
@@ -79,6 +80,7 @@ void	clean_before_exit(t_data *data)
 {
 	rl_clear_history();
 	free_tokens(&data->tmp_names, 1);
+	free_tokens(&data->hd_names, 1);
 	if (data->envp != NULL && data->ptr_allocated_by_program != -1 \
 	&& data->ft_cd_flag)
 		free(data->envp[data->ptr_allocated_by_program]);
