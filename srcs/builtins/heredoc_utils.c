@@ -50,7 +50,6 @@ char	*create_name(int num, t_data *data)
 {
 	char	*numbr;
 	char	*name;
-	//char	*hd_names;
 
 	numbr = ft_itoa(num);
 	if (!numbr)

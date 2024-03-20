@@ -30,14 +30,12 @@ void	update_env(t_data *data)
 	{
 		if (i == k)
 		{
-			if (data->ptr_allocated_by_program)
-				free(data->envp[data->ptr_allocated_by_program]);
+			create_token(0, new, &data->cd_names);
 			data->envp[i] = new;
 			data->ft_cd_flag = 1;
 		}
 		i++;
 	}
-	data->ptr_allocated_by_program = k;
 }
 
 int	ft_empty_cd(t_data *data)

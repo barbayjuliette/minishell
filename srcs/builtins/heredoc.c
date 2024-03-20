@@ -18,8 +18,6 @@ void	child(t_data *data)
 
 	while (1)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, SIG_DFL);
 		str = readline("> ");
 		if (ft_strcmp(str, data->delim) == 0)
 			break ;
@@ -29,14 +27,15 @@ void	child(t_data *data)
 	}
 	free_tokens(&data->tokens, 1);
 	free_commands(&data->tbl);
+	free_tokens(&data->hd_names, 1);
 	exit(0);
 }
 
 int	ft_heredoc(t_data *data, int num)
 {
-	int	pid;
-	int	res;
-	char	*file_n;
+	int			pid;
+	int			res;
+	char		*file_n;
 
 	data->fd_hdc = create_file(num, &file_n, data);
 	data->in_file = file_n;
@@ -61,6 +60,7 @@ int	ft_heredoc(t_data *data, int num)
 int	create_heredoc(t_cmd_table *table, int num, t_data *data)
 {
 	t_token	*lst;
+
 	lst = table->input;
 	while (lst)
 	{
@@ -68,18 +68,16 @@ int	create_heredoc(t_cmd_table *table, int num, t_data *data)
 		{
 			data->delim = lst->value;
 			ft_heredoc(data, num);
-			//data->fd_hdc = open(file_n, O_RDWR);
 		}
 		lst = lst->next;
 	}
-	//close(data->fd_hdc);
 	return (0);
 }
 
 int	run_heredoc(t_cmd_table *table, t_data *data)
 {
 	t_cmd_table	*tmp_cmd;
-	int num;
+	int			num;
 
 	tmp_cmd = table;
 	num = 1;

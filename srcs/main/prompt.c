@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// valgrind --suppressions=readline.supp --leak-check=full 
+// valgrind --suppressions=readline.supp --leak-check=full
 // --show-leak-kinds=all ./minishell
 
 #include "../../includes/minishell.h"
@@ -33,6 +33,7 @@ char	*configure_signals(void)
 
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN);
 	line = readline("minishell$ ");
 	return (line);
 }
@@ -40,12 +41,13 @@ char	*configure_signals(void)
 void	execute_and_clean_up(t_data *data, t_token *tokens, t_cmd_table *table)
 {
 	data->tokens = tokens;
+	free_tokens(&data->hd_names, 1);
 	execute(table, data);
 	free_tokens(&tokens, 1);
 	free_commands(&table);
 	dup2(data->original_stdin, STDIN_FILENO);
 	dup2(data->original_stdout, STDOUT_FILENO);
-}	
+}
 
 int	main(int argc, char **argv, char **envp)
 {
