@@ -18,6 +18,7 @@ void	ft_callbuiltin(int i, char **cmd, t_data *data)
 	free(data->pipefds);
 	free_tokens(&data->tokens, 1);
 	free_commands(&data->tbl);
+	free_tokens(&data->hd_names, 1);
 	exit(data->exit_code);
 }
 

@@ -55,7 +55,6 @@ int	get_fd_in(t_cmd_table *table, t_data *data)
 		{
 			if (lst->type == 4)
 			{
-				data->fd_hdc = open("tmp2.txt", O_RDWR);
 				infile = open(data->in_file, O_RDONLY, 0644);
 			}
 			else
