@@ -36,7 +36,7 @@ int	create_file(int num, char **file_n, t_data *data)
 {
 	char	*name;
 
-	name = create_name(num);
+	name = create_name(num, data);
 	if (!name)
 		return (-1);
 	*file_n = name;
@@ -46,16 +46,19 @@ int	create_file(int num, char **file_n, t_data *data)
 	return (data->fd_hdc);
 }
 
-char	*create_name(int num)
+char	*create_name(int num, t_data *data)
 {
 	char	*numbr;
 	char	*name;
+	//char	*hd_names;
 
 	numbr = ft_itoa(num);
 	if (!numbr)
 		return ((void *)0);
 	name = ft_strjoin("tmp", numbr);
+	create_token(0, name, &data->hd_names);
 	name = ft_strjoin(name, ".txt");
+	create_token(0, name, &data->hd_names);
 	free(numbr);
 	return (name);
 }

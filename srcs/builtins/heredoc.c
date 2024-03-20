@@ -60,8 +60,6 @@ int	ft_heredoc(t_data *data, int num)
 
 int	create_heredoc(t_cmd_table *table, int num, t_data *data)
 {
-	//char	*file_n;
-	//data->fd_hdc = create_file(num, &file_n, data);
 	t_token	*lst;
 	lst = table->input;
 	while (lst)
@@ -71,7 +69,6 @@ int	create_heredoc(t_cmd_table *table, int num, t_data *data)
 			data->delim = lst->value;
 			ft_heredoc(data, num);
 			//data->fd_hdc = open(file_n, O_RDWR);
-			//data->in_file = file_n;
 		}
 		lst = lst->next;
 	}
