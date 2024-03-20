@@ -44,7 +44,7 @@ int	ft_heredoc(t_data *data, int num)
 		return (START_RD_LN);
 	if (pid == 0)
 	{
-		signal(SIGINT, (void (*)(int))handler_in_heredoc);
+		signal(SIGINT, handler_in_heredoc);
 		signal(SIGQUIT, SIG_IGN);
 		child(data);
 	}
