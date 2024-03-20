@@ -79,10 +79,7 @@ int	execute_commands(int *pipefds, t_cmd_table *table, t_data *data, int j)
 			if (table->next)
 				table = table->next;
 			else
-			{
-				data->exit_code = 1;
-				return (1);
-			}
+				return (data->exit_code = 1);
 			data->blocking_flag = 1;
 		}
 		pid = fork();
@@ -92,6 +89,8 @@ int	execute_commands(int *pipefds, t_cmd_table *table, t_data *data, int j)
 			exit(EXIT_FAILURE);
 		table = table->next;
 		j += 2;
+		if (data->delim)
+			close(data->infile);
 	}
 	return (0);
 }
