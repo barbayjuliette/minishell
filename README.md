@@ -62,6 +62,10 @@ make
 
 ./minishell
 
+To run and check for memory leaks, execute the following:
+
+valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
+
 Then type any command, as if you were in a bash shell and have fun!
 
 
