@@ -44,7 +44,8 @@ foreground pipeline.
 
 ## Implementation
 
-The project was split into 2 parts: parsing and execution
+The project was split into 2 parts: parsing ([@barbayjuliette](https://github.com/barbayjuliette)) and execution ([@akolgano](https://github.com/akolgano))
+
 Parsing:
 - Tokenizer and lexer: We get the command and create a linked list of tokens. Each token will have a type based on its value.
 - Expander: Expand the environment variables to their values, remove quotes, and expand $? to the last exit status.
@@ -53,18 +54,23 @@ Parsing:
     - A linked list of input redirections (each with a type that indicates < or <<)
     - A linked list of output redirections (each with a type that indicates > or >>)
     - A pointer to the next command
-    - 
+      
 Once this is done, we can do the execution part and execute each command.
 
 ## How to run
 
+```
 make
+```
 
+```
 ./minishell
+```
 
 To run and check for memory leaks, execute the following:
-
+```
 valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell
+```
 
 Then type any command, as if you were in a bash shell and have fun!
 
