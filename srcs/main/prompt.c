@@ -33,18 +33,28 @@ char	*configure_signals(void)
 
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGPIPE, SIG_IGN);
 	line = readline("minishell$ ");
 	return (line);
 }
 
 void	execute_and_clean_up(t_data *data, t_token *tokens, t_cmd_table *table)
 {
+	t_token	*current;
+
 	data->tokens = tokens;
-	free_tokens(&data->hd_names, 1);
 	execute(table, data);
 	free_tokens(&tokens, 1);
 	free_commands(&table);
+	current = data->hd_names;
+	if (data->in_file)
+	{
+		while (current)
+		{
+			unlink(current->value);
+			current = current->next;
+		}
+	}
+	free_tokens(&data->hd_names, 1);
 	dup2(data->original_stdin, STDIN_FILENO);
 	dup2(data->original_stdout, STDOUT_FILENO);
 }

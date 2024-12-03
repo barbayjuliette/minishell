@@ -43,6 +43,8 @@ char	*find_path(char *cmd, char **envp)
 
 void	handle_error(char **cmd, char	*path, t_data *data)
 {
+	t_token	*current;
+
 	ft_putstr_fd(cmd[0], 2);
 	ft_putendl_fd(": command not found", 2);
 	if (path != cmd[0])
@@ -50,6 +52,16 @@ void	handle_error(char **cmd, char	*path, t_data *data)
 	free(data->pipefds);
 	free_tokens(&data->tokens, 1);
 	free_commands(&data->tbl);
+	current = data->hd_names;
+	if (data->in_file)
+	{
+		while (current)
+		{
+			unlink(current->value);
+			current = current->next;
+		}
+	}
+	free_tokens(&data->hd_names, 1);
 	exit(127);
 }
 
